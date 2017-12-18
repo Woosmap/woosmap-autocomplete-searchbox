@@ -1,0 +1,34 @@
+.autocomplete [hidden] {
+    display: none;
+}
+
+.autocomplete .visually-hidden {
+    position: absolute;
+    clip: rect(0, 0, 0, 0);
+}
+
+.autocomplete {
+    display: inline-block;
+    position: relative;
+}
+
+.autocomplete > input {
+    display: block;
+    outline: none;
+}
+
+.autocomplete > ul {
+    position: absolute;
+    left: 0;
+    z-index: 1;
+    min-width: 100%;
+    box-sizing: border-box;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: #fff;
+}
+
+.autocomplete > ul:empty {
+    display: none;
+}

@@ -1,0 +1,53 @@
+.autocomplete > ul {
+    margin: 0;
+    background-color: #fff;
+    border-radius: 0 0 2px 2px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    text-shadow: none;
+}
+
+@supports (transform: scale(0)) {
+    .autocomplete > ul {
+        transition: .3s cubic-bezier(.4, .2, .5, 1.4);
+        transform-origin: 1.43em -.43em;
+    }
+
+    .autocomplete > ul[hidden],
+    .autocomplete > ul:empty {
+        opacity: 0;
+        display: block;
+        transition: left 0.5s;
+        -webkit-transform: scale(0);
+        transform: scale(0);
+        transition-property: -webkit-transform, transform, visibility, opacity;
+        transition-duration: 200ms;
+        transition-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1);
+    }
+}
+
+.autocomplete > ul > li {
+    position: relative;
+    padding: .5em .5em;
+    cursor: pointer;
+    color: #333;
+}
+
+.autocomplete > ul > li:hover {
+    background: rgba(0, 0, 0, .06);
+}
+
+.autocomplete > ul > li[aria-selected="true"] {
+    background: rgba(0, 0, 0, .06);
+}
+
+.autocomplete mark {
+    font-weight: bold;
+    color: inherit;
+    background: none;
+}
+
+.autocomplete > ul > li > span {
+    color: #8C8C8C;
+    font-size: 0.9em;
+}
