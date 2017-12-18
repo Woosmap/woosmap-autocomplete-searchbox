@@ -25,8 +25,9 @@
         else {
             this.google = new GooglePlaces(input, googleOptions);
         }
-
-        this.woosmap = new Woosmap(input, woosmapOptions);
+        if (!this.googleOnly){
+            this.woosmap = new Woosmap(input, woosmapOptions);
+        }
         this.autocomplete = new Autocomplete(input, autocompleteOptions);
         this.currentSearch = '';
 
@@ -82,11 +83,13 @@
                 Autocomplete.$.fire(me.input, "autocomplete-woosmap-selectcomplete", {
                     placeDetails: placeDetail
                 });
-                me.woosmap.searchNearbyStores(latlngObj, function (assetsDetails) {
-                    Autocomplete.$.fire(me.input, "autocomplete-woosmap-assetcomplete", {
-                        woosmapAssets: assetsDetails
+                if (!this.googleOnly) {
+                    me.woosmap.searchNearbyStores(latlngObj, function (assetsDetails) {
+                        Autocomplete.$.fire(me.input, "autocomplete-woosmap-assetcomplete", {
+                            woosmapAssets: assetsDetails
+                        });
                     });
-                });
+                }
             });
         },
         autocompleteWoosmapSelectComplete: function (evt) {

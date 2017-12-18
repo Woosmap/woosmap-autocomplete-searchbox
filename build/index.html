@@ -5,18 +5,20 @@
     <title>Title</title>
 <link href="./autocompletewoosmap.css" rel="stylesheet"><script type="text/javascript" src="./autocompletewoosmap.js"></script></head>
 <body>
-<input class="autocomplete-woosmap" id="my-input-google" style="width:320px; padding: 1em;"
-       placeholder="Search for Addresses..."/>
+<input class="autocomplete-woosmap" id="my-input" style="width:320px; padding: 1em;"
+       placeholder="Search for Addresses and Woosmap..."/>
 <input id="my-input-woosmap" style="width:320px; padding: 1em;"
-       placeholder="Search for Woosmap Name..."/>
+       placeholder="Search for Woosmap Only..."/>
+<input id="my-input-google" style="width:320px; padding: 1em;"
+       placeholder="Search for Addresses Only..."/>
 <pre style="word-wrap: break-word; white-space: pre-wrap;" id="result-address"></pre>
 <br/>
 <pre style="word-wrap: break-word; white-space: pre-wrap;" id="result-asset"></pre>
 <script>
-    document.getElementById('my-input-google').addEventListener('autocomplete-woosmap-selectcomplete', function (evt) {
+    document.getElementById('my-input').addEventListener('autocomplete-woosmap-selectcomplete', function (evt) {
         document.getElementById("result-address").innerHTML = '<h2>Place Details <h3>(' + evt.placeDetails.formatted_address + ')</h3></h2>' + JSON.stringify(evt.placeDetails);
     });
-    document.getElementById('my-input-google').addEventListener('autocomplete-woosmap-assetcomplete', function (evt) {
+    document.getElementById('my-input').addEventListener('autocomplete-woosmap-assetcomplete', function (evt) {
         document.getElementById("result-asset").innerHTML = '<h2>Woosmap Assets <h3>(' + evt.woosmapAssets.map(function (data) {
             return data.properties.name
         }) + ')</h3></h2>' + JSON.stringify(evt.woosmapAssets);
@@ -28,6 +30,13 @@
     document.getElementById('my-input-woosmap').addEventListener('autocomplete-woosmap-assetcomplete', function (evt) {
         document.getElementById("result-address").innerHTML = '';
         document.getElementById("result-asset").innerHTML = '<h2>Woosmap Asset <h3>(' + evt.woosmapAsset.properties.name + ')</h3></h2>' + JSON.stringify(evt.woosmapAsset);
+    });
+
+    //only fire address select without performing woosmap nearby search
+    new AutocompleteWoosmapSearchBox(document.getElementById('my-input-google'), {search: {googleOnly: true}});
+    document.getElementById('my-input-google').addEventListener('autocomplete-woosmap-selectcomplete', function (evt) {
+        document.getElementById("result-asset").innerHTML = '';
+        document.getElementById("result-address").innerHTML = '<h2>Place Details <h3>(' + evt.placeDetails.formatted_address + ')</h3></h2>' + JSON.stringify(evt.placeDetails);
     });
 </script>
 </body>

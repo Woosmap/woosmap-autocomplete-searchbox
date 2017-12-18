@@ -20,6 +20,7 @@ module.exports = {
         sort: false
     },
     search: {
-        woosmapOnly: false
+        woosmapOnly: false,
+        googleOnly: false
     }
 };

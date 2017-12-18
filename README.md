@@ -99,7 +99,8 @@ autocomplete: {
     autoFirst: true
 },
 search: {
-    woosmapOnly: false
+    woosmapOnly: false,
+    googleOnly: false
 }}
 ```
 
