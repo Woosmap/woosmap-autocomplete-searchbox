@@ -1,0 +1,29 @@
+{
+  "extends": "eslint:recommended",
+  "globals": {
+    "window": true,
+    "document": true,
+    "module": true,
+    "require": true,
+    "autocomplete": true,
+    "google": true,
+    "woosmap": true,
+    "console": true
+  },
+  "rules": {
+    "no-empty": 0,
+    "semi": 2,
+    "no-console": [
+      "warn",
+      {
+        "allow": [
+          "warn",
+          "error"
+        ]
+      }
+    ],
+    "no-undef": 0,
+    "no-undef-init": 0,
+    "no-undefined": 0
+  }
+}
