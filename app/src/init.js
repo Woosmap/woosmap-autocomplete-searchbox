@@ -3,40 +3,50 @@
     var Autocomplete = require('./autocomplete.js');
     var Woosmap = require('./woosmap.js');
     var _ = require('./utils.js');
+    var defaultConfig = require('./defaultconfig.js').search;
 
-    var AutocompleteWoosmapSearchBox = function (input) {
+    var AutocompleteWoosmapSearchBox = function (input, options) {
         var me = this;
-        this.google = new GooglePlaces(input, {});
-        this.woosmap = new Woosmap(input, {});
-        this.autocomplete = new Autocomplete(input, {minChars: 2, sort: false});
+        this.input = input;
+
+        options = options || {};
+        var googleOptions = options.google || {};
+        var searchOptions = options.search || {};
+        var woosmapOptions = options.woosmap || {};
+        var autocompleteOptions = options.autocomplete || {};
+
+        defaultConfig.inputEvt = this.autocompleteAddressInputEvt;
+        defaultConfig.selectComplete = this.autocompleteAddressSelectComplete;
+        _.configure(this, defaultConfig, searchOptions);
+        if (this.woosmapOnly) {
+            this.inputEvt = this.autocompleteWoosmapInputEvt;
+            this.selectComplete = this.autocompleteWoosmapSelectComplete;
+        }
+        else {
+            this.google = new GooglePlaces(input, googleOptions);
+        }
+
+        this.woosmap = new Woosmap(input, woosmapOptions);
+        this.autocomplete = new Autocomplete(input, autocompleteOptions);
         this.currentSearch = '';
 
-        _.$(input).addEventListener("click", function () {
+        _.$(this.input).addEventListener("click", function () {
             me.autocompleteClickEvt();
         });
-        _.$(input).addEventListener("input", function () {
-            me.autocompleteAddressInputEvt();
+        _.$(this.input).addEventListener("input", function () {
+            me.inputEvt();
         });
-        _.$(input).addEventListener('autocomplete-selectcomplete', function (evt) {
-            me.google.getDetails(evt.text.metadata.place_id, function (placeDetail, latlngObj) {
-                Autocomplete.$.fire(me.autocomplete.input, "autocomplete-woosmap-selectcomplete", {
-                    placeDetails: placeDetail
-                });
-                me.woosmap.searchNearbyStores(latlngObj, function (assetsDetails) {
-                    Autocomplete.$.fire(me.autocomplete.input, "autocomplete-woosmap-assetcomplete", {
-                        woosmapAssets: assetsDetails
-                    });
-                });
-            });
+        _.$(this.input).addEventListener('autocomplete-selectcomplete', function (evt) {
+            me.selectComplete(evt);
         });
     };
     AutocompleteWoosmapSearchBox.prototype = {
         autocompleteAddressInputEvt: function () {
-            if (this.autocomplete.input.value.length >= this.autocomplete.minChars) {
+            if (this.input.value.length >= this.autocomplete.minChars) {
                 this.request = {
-                    input: this.autocomplete.input.value
+                    input: this.input.value
                 };
-                this.currentSearch = this.autocomplete.input.value;
+                this.currentSearch = this.input.value;
                 var me = this;
                 this.google.getPredictions(this.request, function (list) {
                     if (list.length > 0) {
@@ -66,10 +76,28 @@
                 }
             }
         },
+        autocompleteAddressSelectComplete: function (evt) {
+            var me = this;
+            this.google.getDetails(evt.text.metadata.place_id, function (placeDetail, latlngObj) {
+                Autocomplete.$.fire(me.input, "autocomplete-woosmap-selectcomplete", {
+                    placeDetails: placeDetail
+                });
+                me.woosmap.searchNearbyStores(latlngObj, function (assetsDetails) {
+                    Autocomplete.$.fire(me.input, "autocomplete-woosmap-assetcomplete", {
+                        woosmapAssets: assetsDetails
+                    });
+                });
+            });
+        },
+        autocompleteWoosmapSelectComplete: function (evt) {
+            Autocomplete.$.fire(this.input, "autocomplete-woosmap-assetcomplete", {
+                woosmapAsset: evt.text.metadata
+            });
+        },
         autocompleteWoosmapInputEvt: function () {
-            if (this.autocomplete.input.value.length >= this.autocomplete.minChars) {
+            if (this.input.value.length >= this.autocomplete.minChars) {
                 var me = this;
-                this.woosmap.searchStoresByName(this.autocomplete.input.value, function (list) {
+                this.woosmap.searchStoresByName(this.input.value, function (list) {
                     if (list.length > 0) {
                         me.autocomplete.filter = function () {
                             return true;
@@ -91,8 +119,8 @@
         },
         autocompleteClickEvt: function () {
             if (this.autocomplete.ul.childNodes.length !== 0 && this.autocomplete.ul.hasAttribute('hidden')) {
-                if (this.currentSearch !== this.autocomplete.input.value) {
-                    this.autocompleteAddressInputEvt();
+                if (this.currentSearch !== this.input.value) {
+                    this.inputEvt();
                 }
                 else {
                     this.autocomplete.open();

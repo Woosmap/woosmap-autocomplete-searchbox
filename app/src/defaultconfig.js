@@ -16,6 +16,10 @@ module.exports = {
     autocomplete: {
         minChars: 2,
         maxItems: 10,
-        autoFirst: true
+        autoFirst: true,
+        sort: false
+    },
+    search: {
+        woosmapOnly: false
     }
 };
