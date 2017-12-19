@@ -4,7 +4,13 @@
     var GooglePlaces = function (input, options) {
         this.input = _.$(input);
         _.configure(this, defaultConfig, options);
-        this._loadPlacesApi();
+        if (typeof google === "object" && typeof google.maps === "object" && typeof google.maps.places === "object") {
+            this.autocompleteService = new google.maps.places.AutocompleteService();
+            this.placesService = new google.maps.places.PlacesService(document.createElement('div'));
+        }
+        else {
+            this._loadPlacesApi();
+        }
     };
 
     GooglePlaces.prototype = {
