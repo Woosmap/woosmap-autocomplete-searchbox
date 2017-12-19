@@ -91,7 +91,9 @@ google: {
 woosmap: {
     projectKey: 'woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae',
     storesByPage: 5,
-    maxDistance: 0
+    maxDistance: 0,
+    queryPattern: 'name:"{}" OR city:"{}"',
+    queryReplaceKey: "{}"
 },
 autocomplete: {
     minChars: 2,
@@ -100,13 +102,16 @@ autocomplete: {
 },
 search: {
     woosmapOnly: false,
-    googleOnly: false
+    googleOnly: false,
+    debounceTime: 50
 }}
 ```
 
 ### config (via HTML)
-set data-`[configkey]` when specifying input
+set data-`[configkey]` when specifying input (Don't forget to add class `class="autocomplete-woosmap"`)
 ```html
+<link href="./autocompletewoosmap.css" rel="stylesheet"></head>
+<script type="text/javascript" src="./autocompletewoosmap.js"></script></body>
 <input class="autocomplete-woosmap" data-projectKey="JGHVCKEHJBCKDSKJBVXXZLIHFELKF" id="my-input"/>
 ```
 
