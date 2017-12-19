@@ -6,12 +6,18 @@
 </head>
 <body style="width: 100%;">
 <a href="./index.html" style="color:red">Default</a> | <a href="./woosmaponly.html">Woosmap Only</a> | <a href="./googleonly.html">Google Only</a><br/><br/>
-<input class="autocomplete-woosmap" id="my-input" style="width:320px; padding: 1em;"
+<input id="my-input" style="width:320px; padding: 1em;"
        placeholder="Search for Addresses and Woosmap..."/>
 <pre style="word-wrap: break-word; white-space: pre-wrap;" id="result-address"></pre>
 <br/>
 <pre style="word-wrap: break-word; white-space: pre-wrap;" id="result-asset"></pre>
 <script>
+    var project_key = location.search.split('key=')[1];
+    var config = {};
+    if (project_key) {
+        config.woosmap = {projectKey: project_key}
+    }
+    new AutocompleteWoosmapSearchBox(document.getElementById('my-input'), config);
     document.getElementById('my-input').addEventListener('autocomplete-woosmap-selectcomplete', function (evt) {
         document.getElementById("result-address").innerHTML = '<h2>Place Details <h3>(' + evt.placeDetails.formatted_address + ')</h3></h2>' + JSON.stringify(evt.placeDetails);
     });
