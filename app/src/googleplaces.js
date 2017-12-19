@@ -20,7 +20,7 @@
                         }
                         return {label: data.label, value: data.description, metadata: data};
                     });
-                    callback(list);
+                    callback(list, request.input);
                 }
                 else if (status === google.maps.places.PlacesServiceStatus.UNKNOWN_ERROR || status === google.maps.places.PlacesServiceStatus.OVER_QUERY_LIMIT) {
                     window.setTimeout(function () {
@@ -28,7 +28,7 @@
                     }, 100);
                 }
                 else if (status === google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
-                    callback([]);
+                    callback([], request.input);
                 } else {
                     console.error(status);
                 }

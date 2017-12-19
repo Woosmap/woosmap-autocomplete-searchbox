@@ -18,10 +18,10 @@
                         data.index = index;
                         return {label: data.properties.name, value: data.properties.name, metadata: data};
                     });
-                    callback(list);
+                    callback(list, searchedName);
                 },
                 errorCallback: function () {
-                    callback([{label: 'error in search woosmap stores', value: 'woosmap error', metadata: {}}]);
+                    callback([], searchedName);
                 },
                 query: 'name:"' + searchedName + '"',
                 storesByPage: this.storesByPage,

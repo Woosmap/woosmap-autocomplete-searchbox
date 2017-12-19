@@ -21,6 +21,7 @@ module.exports = {
     },
     search: {
         woosmapOnly: false,
-        googleOnly: false
+        googleOnly: false,
+        debounceTime: 50
     }
 };

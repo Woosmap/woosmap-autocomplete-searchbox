@@ -25,18 +25,19 @@
         else {
             this.google = new GooglePlaces(input, googleOptions);
         }
-        if (!this.googleOnly){
+        if (!this.googleOnly) {
             this.woosmap = new Woosmap(input, woosmapOptions);
         }
         this.autocomplete = new Autocomplete(input, autocompleteOptions);
+
         this.currentSearch = '';
 
         _.$(this.input).addEventListener("click", function () {
             me.autocompleteClickEvt();
         });
-        _.$(this.input).addEventListener("input", function () {
+        _.$(this.input).addEventListener("input", _.debounce(function () {
             me.inputEvt();
-        });
+        }, this.debounceTime, false));
         _.$(this.input).addEventListener('autocomplete-selectcomplete', function (evt) {
             me.selectComplete(evt);
         });
@@ -49,7 +50,10 @@
                 };
                 this.currentSearch = this.input.value;
                 var me = this;
-                this.google.getPredictions(this.request, function (list) {
+                this.google.getPredictions(this.request, function (list, query) {
+                    if (query !== me.autocomplete.input.value) {
+                        return;
+                    }
                     if (list.length > 0) {
                         me.autocomplete.item = function (suggestion) {
                             var offset = suggestion.metadata.matched_substrings[0].offset;
@@ -83,7 +87,7 @@
                 Autocomplete.$.fire(me.input, "autocomplete-woosmap-selectcomplete", {
                     placeDetails: placeDetail
                 });
-                if (!this.googleOnly) {
+                if (!me.googleOnly) {
                     me.woosmap.searchNearbyStores(latlngObj, function (assetsDetails) {
                         Autocomplete.$.fire(me.input, "autocomplete-woosmap-assetcomplete", {
                             woosmapAssets: assetsDetails
@@ -100,7 +104,10 @@
         autocompleteWoosmapInputEvt: function () {
             if (this.input.value.length >= this.autocomplete.minChars) {
                 var me = this;
-                this.woosmap.searchStoresByName(this.input.value, function (list) {
+                this.woosmap.searchStoresByName(this.input.value, function (list, query) {
+                    if (query !== me.autocomplete.input.value) {
+                        return;
+                    }
                     if (list.length > 0) {
                         me.autocomplete.filter = function () {
                             return true;
