@@ -11,19 +11,23 @@
     };
 
     Woosmap.prototype = {
-        searchStoresByName: function (searchedName, callback) {
+        searchStoresByName: function (searchTerm, callback) {
             woosmapRecommendation.searchStores({
                 successCallback: function (resp) {
                     var list = resp.features.map(function (data, index) {
                         data.index = index;
-                        return {label: data.properties.name, value: data.properties.name, metadata: data};
+                        data.label = data.properties.name;
+                        if (typeof data.properties.address !== 'undefined' && typeof data.properties.address.city !== 'undefined') {
+                            data.label += ' ' + data.properties.address.city;
+                        }
+                        return {label: data.label, value: data.properties.name, metadata: data};
                     });
-                    callback(list, searchedName);
+                    callback(list, searchTerm);
                 },
                 errorCallback: function () {
-                    callback([], searchedName);
+                    callback([], searchTerm);
                 },
-                query: 'name:"' + searchedName + '"',
+                query: this.queryPattern.split(this.queryReplaceKey).join(searchTerm),
                 storesByPage: this.storesByPage,
                 maxDistance: this.maxDistance
             });

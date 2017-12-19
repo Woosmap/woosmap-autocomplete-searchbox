@@ -11,7 +11,9 @@ module.exports = {
     woosmap: {
         projectKey: 'woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae',
         storesByPage: 5,
-        maxDistance: 0
+        maxDistance: 0,
+        queryPattern: 'name:"{}" OR city:"{}"',
+        queryReplaceKey: "{}"
     },
     autocomplete: {
         minChars: 2,

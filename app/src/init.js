@@ -104,11 +104,17 @@
         autocompleteWoosmapInputEvt: function () {
             if (this.input.value.length >= this.autocomplete.minChars) {
                 var me = this;
+                this.currentSearch = this.input.value;
                 this.woosmap.searchStoresByName(this.input.value, function (list, query) {
                     if (query !== me.autocomplete.input.value) {
                         return;
                     }
                     if (list.length > 0) {
+                        me.autocomplete.item = function (suggestion) {
+                            var secondary_text = suggestion.metadata.properties.address.city;
+                            var item_id = suggestion.metadata.index;
+                            return Autocomplete.ITEM(suggestion, me.autocomplete.input.value, item_id, secondary_text);
+                        };
                         me.autocomplete.filter = function () {
                             return true;
                         };
