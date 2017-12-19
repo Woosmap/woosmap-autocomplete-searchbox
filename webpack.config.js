@@ -22,6 +22,16 @@ var webpackConfig = {
             template: 'sample/index.html',
             inject: 'head'
         }),
+        new HtmlWebpackPlugin({
+            filename: 'googleonly.html',
+            template: 'sample/googleonly.html',
+            inject: 'head'
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'woosmaponly.html',
+            template: 'sample/woosmaponly.html',
+            inject: 'head'
+        }),
         new ExtractTextPlugin("autocompletewoosmap.css")
     ]
 };
