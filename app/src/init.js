@@ -76,9 +76,7 @@
                 });
             }
             else {
-                while (this.autocomplete.ul.firstChild) {
-                    this.autocomplete.ul.removeChild(this.autocomplete.ul.firstChild);
-                }
+                this.autocomplete.list = [];
             }
         },
         autocompleteAddressSelectComplete: function (evt) {
@@ -128,9 +126,7 @@
                 });
             }
             else {
-                while (this.autocomplete.ul.firstChild) {
-                    this.autocomplete.ul.removeChild(this.autocomplete.ul.firstChild);
-                }
+                this.autocomplete.list = [];
             }
         },
         autocompleteClickEvt: function () {

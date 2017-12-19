@@ -57,7 +57,6 @@
 
         this._events = {
             input: {
-                "input": this.evaluate.bind(this),
                 "blur": this.close.bind(this, {reason: "blur"}),
                 "keydown": function (evt) {
                     var c = evt.keyCode;
