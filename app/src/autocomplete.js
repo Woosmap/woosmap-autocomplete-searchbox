@@ -334,7 +334,7 @@
 
     Autocomplete.ITEM = function (text, input, item_id, secondary_text) {
         var html = input.trim() === "" ? text : text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
-        if (typeof secondary_text !== 'undefined') {
+        if (typeof secondary_text !== 'undefined' && typeof secondary_text === "string") {
             html = html.replace(RegExp($.regExpEscape(secondary_text.trim()), "gi"), "<span>$&</span>");
         }
         return $.create("li", {

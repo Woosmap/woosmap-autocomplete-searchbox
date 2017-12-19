@@ -17,10 +17,12 @@
                     var list = resp.features.map(function (data, index) {
                         data.index = index;
                         data.label = data.properties.name;
-                        if (typeof data.properties.address !== 'undefined' && typeof data.properties.address.city !== 'undefined') {
+                        data.value = data.properties.name;
+                        if (typeof data.properties.address !== 'undefined' && typeof data.properties.address.city !== 'undefined' && typeof data.properties.address.city === "string") {
                             data.label += ' ' + data.properties.address.city;
+                            data.value += ', ' + data.properties.address.city;
                         }
-                        return {label: data.label, value: data.properties.name, metadata: data};
+                        return {label: data.label, value: data.value, metadata: data};
                     });
                     callback(list, searchTerm);
                 },
