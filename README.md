@@ -1,33 +1,56 @@
 # woosmap-autocomplete-searchbox
 
-## Dev Install
-### Install dependencies
+This repo is a lightweight and customizable autocomplete widget to search for **Woosmap Localities** and fallback on **Google Places** according to certain specific criteria.
 
+## Installation
+First, fork or download the source code and run the following commands
+
+### Install dependencies
 ```ShellSession
 $ npm install
 ```
-
 ### Run
 ```ShellSession
-$ npm start
+$ npm run start
 ```
-
-### Production build
+### build
 ```ShellSession
 $ npm run build
 ```
 
-
-## Autocomplete Google Address and Get Nearby Woosmap Assets
-### Prerequisites
-
-Add `class="autocomplete-woosmap"` to your input:
-
+## Basic Usage
+Before you try anything, you need to add an *input* block element and include autocompletewoosmap.css and autocompletewoosmap.js in your page, via the usual tags:
 ```html
 <link href="./autocompletewoosmap.css" rel="stylesheet"></head>
 <script type="text/javascript" src="./autocompletewoosmap.js"></script></body>
-<input class="autocomplete-woosmap" id="my-input"/>
-``` 
+<input id="my-input"/>
+```
+Then you need at least to specify your Woosmap Public key and and the Google Api key before instantiate the widget with default criteria:
+```html
+<script>
+    const config = {
+        woosmap: {projectKey: "woos-XXXX"},
+        google: {apiKey: "AIzaYYYYYY-1234567"}
+    };    
+    const input = document.getElementById("my-input");
+    new AutocompleteWoosmapSearchBox(input, config);
+</script>
+```
+
+
+## Add Listener on Selected Localities or Places details
+
+### Woosmap Localities onSelect
+
+Woosmap Localities Doc : https://developers.google.com/maps/documentation/javascript/places#place_details
+
+```html
+<script>
+    document.getElementById('my-input').addEventListener('autocomplete-woosmap-assetcomplete', function (evt) {
+        console.log(evt.woosmapAsset);
+    });
+</script>
+```
 
 ### Google Place Details onSelect
 
@@ -41,101 +64,51 @@ Place Details Data Doc : https://developers.google.com/maps/documentation/javasc
 </script>
 ``` 
 
-### Woosmap Assets Nearby Selected Address
-
-Woosmap Asset Data Doc : https://developers.woosmap.com/data-api/samples/api-response.html
-
-```html
-<script>
-    document.getElementById('my-input').addEventListener('autocomplete-woosmap-assetcomplete', function (evt) {
-        console.log(evt.woosmapAssets);
-    });
-</script>
-```
-
-
-## Autocomplete Woosmap
-### Prerequisites
-
-Add `class="autocomplete-woosmap"` and `data-woosmaponly=true` to your input:
-
-```html
-<link href="./autocompletewoosmap.css" rel="stylesheet"></head>
-<script type="text/javascript" src="./autocompletewoosmap.js"></script></body>
-<input class="autocomplete-woosmap" data-woosmaponly=true id="my-input"/>
-```
-
-### Woosmap Assets onSelect
-
-```html
-<script>
-    document.getElementById('my-input').addEventListener('autocomplete-woosmap-assetcomplete', function (evt) {
-        console.log(evt.woosmapAsset);
-    });
-</script>
-```
-
 ## Config
 ### default config
 ```js
-var defaultConfig = {
-google: {
-    clientId: '',
-    apiKey: '',
-    channel: '',
-    librariesToLoad: ['places'],
-    language: 'fr',
-    region: 'FR',
-    version: '3'
-},
-woosmap: {
-    projectKey: 'woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae',
-    storesByPage: 5,
-    maxDistance: 0,
-    queryPattern: 'name:"{}" OR city:"{}"',
-    queryReplaceKey: "{}"
-},
-autocomplete: {
-    minChars: 2,
-    maxItems: 12,
-    autoFirst: true
-},
-search: {
-    woosmapOnly: false,
-    googleOnly: false,
-    debounceTime: 50
-}}
-```
-
-### config (via HTML)
-set data-`[configkey]` when specifying input (Don't forget to add class `class="autocomplete-woosmap"`)
-```html
-<link href="./autocompletewoosmap.css" rel="stylesheet"></head>
-<script type="text/javascript" src="./autocompletewoosmap.js"></script></body>
-<input class="autocomplete-woosmap" data-projectKey="JGHVCKEHJBCKDSKJBVXXZLIHFELKF" id="my-input"/>
-```
-
-### config (via JS)
-```html
-<link href="./autocompletewoosmap.css" rel="stylesheet"></head>
-<script type="text/javascript" src="./autocompletewoosmap.js"></script></body>
-<input id="my-input"/>
-<script>
-var myConfig = {
+let defaultConfig = {
     google: {
-        region: 'UK'
+        clientId: '',
+        apiKey: '',
+        channel: '',
+        librariesToLoad: ['places'],
+        language: 'fr',
+        region: 'FR',
+        version: '3',
+        componentRestrictions: {}
     },
     woosmap: {
-        projectKey: 'woos-0c78592f-13ea-362b-aa07-ba4ba9ea3da22',
-        storesByPage: 3
+        projectKey: '',
+        componentRestrictions: {},
+        types: '',
+        data: 'standard',
+        localitiesLibUrl: 'https://sdk.woosmap.com/localities/localities.js'
     },
     autocomplete: {
-        minChars: 3,
-        autoFirst: false
+        minChars: 2,
+        maxItems: 5,
+        autoFirst: true,
+        sort: true,
+        debounceTime: 100,
+    },
+    search: {
+        minRatio: 75,
+        searchGoogleWhenFullRatio: false,
+        searchGoogleWhenPartialResults: true,
+        fallbackWoosmap: true
     }
-var input = document.getElementById("my-input");
-new AutocompleteWoosmapSearchBox(input, myConfig);
-</script>
+};
+```
+
+### bounds search with componentRestrictions 
+If you want to restrict your search by country for Woosmap Localities and Google Places, specify the `componentRestrictions` parameter like this:
+
+```js
+const config = {
+    woosmap: {componentRestrictions: {country: ['UK', 'FR', 'ES']}},
+    google: {componentRestrictions: {country: ['UK', 'FR', 'ES']}}
+};   
 ```
 
 

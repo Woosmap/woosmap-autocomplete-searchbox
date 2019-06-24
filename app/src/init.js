@@ -7,7 +7,7 @@
 
     class AutocompleteWoosmapSearchBox {
         constructor(input, options) {
-            const me = this;
+            const self = this;
             this.input = input;
 
             options = options || {};
@@ -24,17 +24,16 @@
             this.woosmap = new Woosmap(input, woosmapOptions);
             this.autocomplete = new Autocomplete(input, autocompleteOptions);
 
-
             this.currentSearch = '';
 
             _.$(this.input).addEventListener("click", () => {
-                me.autocompleteClickEvt();
+                self.autocompleteClickEvt();
             });
             _.$(this.input).addEventListener("input", _.debounce(() => {
-                me.inputEvt();
-            }, this.debounceTime, false));
+                self.inputEvt();
+            }, this.autocomplete.debounceTime, false));
             _.$(this.input).addEventListener('autocomplete-selectcomplete', evt => {
-                me.selectComplete(evt);
+                self.selectComplete(evt);
             });
         }
 
@@ -59,7 +58,7 @@
         autocompleteWoosmapInputEvt() {
             const listLocalitiesItems = [];
             let listTotalItems = [];
-            let perfectMatching = true;
+            let onlyFullRatio = true;
             if (this.input.value.length >= this.autocomplete.minChars) {
                 this.currentSearch = this.input.value;
                 this.request = {
@@ -75,13 +74,13 @@
                         self.autocomplete.sort = (a, b) => b.metadata.ratio - a.metadata.ratio;
                         for (let i = 0, x = list.length; i < x; i++) {
                             if (self.searchGoogleWhenFullRatio && list[i].metadata.ratio <= 100) {
-                                perfectMatching = false;
+                                onlyFullRatio = false;
                             }
                             listLocalitiesItems.push(list[i]);
                         }
                         listTotalItems = listLocalitiesItems.filter(({metadata}) => metadata.ratio >= self.minRatio);
                     }
-                    if ((listTotalItems.length < 5 && (self.searchGoogleWhenPartialResults || perfectMatching)) || listTotalItems.length === 0) {
+                    if ((listTotalItems.length < self.autocomplete.maxItems && (self.searchGoogleWhenPartialResults || onlyFullRatio)) || listTotalItems.length === 0) {
                         const that = self;
                         self.google.getPredictions(self.request, (listGooglePlacesItems, queryInput) => {
                             if (queryInput !== that.autocomplete.input.value) {
