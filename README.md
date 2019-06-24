@@ -42,7 +42,7 @@ Then you need at least to specify your Woosmap Public key and and the Google Api
 
 ### Woosmap Localities onSelect
 
-Woosmap Localities Doc : https://developers.google.com/maps/documentation/javascript/places#place_details
+Woosmap Localities response Doc : https://developers.woosmap.com/guides/search-localities/search-city-postcode/#localities-predictions-responses
 
 ```html
 <script>
@@ -54,11 +54,11 @@ Woosmap Localities Doc : https://developers.google.com/maps/documentation/javasc
 
 ### Google Place Details onSelect
 
-Place Details Data Doc : https://developers.google.com/maps/documentation/javascript/places#place_details
+Place Details response Doc : https://developers.google.com/maps/documentation/javascript/places#place_details
 
 ```html
 <script>
-    document.getElementById('my-input').addEventListener('autocomplete-woosmap-selectcomplete', function (evt) {
+    document.getElementById('my-input').addEventListener('autocomplete-google-selectcomplete', function (evt) {
         console.log(evt.placeDetails);
     });
 </script>
@@ -112,6 +112,7 @@ const config = {
 ```
 
 
-## Demo
-https://preview.webgeoservices.com/woosmap-autocomplete-searchbox/index.html
+## Demos
+https://demo.woosmap.com/localities/
+https://demo.woosmap.com/localities/basic.html
 
