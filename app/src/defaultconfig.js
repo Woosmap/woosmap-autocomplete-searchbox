@@ -1,29 +1,32 @@
 module.exports = {
     google: {
         clientId: '',
-        apiKey: '',
+        apiKey: 'AIzaSyBn3kw1bNdgmiXAczwr2DcKLAaW-M3nX14',
         channel: '',
         librariesToLoad: ['places'],
         language: 'fr',
         region: 'FR',
-        version: '3'
+        version: '3',
+        componentRestrictions: {country: ['fr']},
     },
     woosmap: {
-        projectKey: 'woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae',
-        storesByPage: 5,
-        maxDistance: 0,
-        queryPattern: 'name:"{}" OR city:"{}"',
-        queryReplaceKey: "{}"
+        projectKey: 'woos-5fdbad2d-975e-3725-844a-e8917c0d8a3b',
+        componentRestrictions: '',
+        types: '',
+        data: 'standard',
+        localitiesLibUrl: 'https://sdk.woosmap.com/localities/localities.js'
     },
     autocomplete: {
         minChars: 2,
-        maxItems: 10,
+        maxItems: 15,
         autoFirst: true,
-        sort: false
+        sort: true
     },
     search: {
-        woosmapOnly: false,
-        googleOnly: false,
-        debounceTime: 50
+        debounceTime: 70,
+        minRatio: 75,
+        searchGoogleWhenFullRatio: false,
+        searchGoogleWhenPartialResults: true,
+        fallbackWoosmap: true
     }
 };

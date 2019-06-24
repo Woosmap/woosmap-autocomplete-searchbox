@@ -1,7 +1,7 @@
 "use strict";
 var webpack = require('webpack');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var webpackConfig = {
@@ -23,16 +23,14 @@ var webpackConfig = {
             inject: 'head'
         }),
         new HtmlWebpackPlugin({
-            filename: 'googleonly.html',
-            template: 'sample/googleonly.html',
+            filename: 'basic.html',
+            template: 'sample/basic.html',
             inject: 'head'
         }),
-        new HtmlWebpackPlugin({
-            filename: 'woosmaponly.html',
-            template: 'sample/woosmaponly.html',
-            inject: 'head'
-        }),
-        new ExtractTextPlugin("autocompletewoosmap.css")
+        new ExtractTextPlugin("autocompletewoosmap.css"),
+        new CopyWebpackPlugin([
+            {from: 'app/images', to: 'images'}
+        ]),
     ]
 };
 webpackConfig.module.loaders.push({
@@ -45,16 +43,5 @@ webpackConfig.module.loaders.push({
     exclude: /node_modules/,
     loader: ExtractTextPlugin.extract({fallback: "style-loader", use: "css-loader"})
 });
-
-if (process.env.DEBUG === 'yes') {
-    webpackConfig.devtool = 'source-map';
-}
-else {
-    webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({
-        compress: {
-            warnings: false
-        }
-    }));
-}
 
 module.exports = webpackConfig;

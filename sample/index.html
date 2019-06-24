@@ -4,29 +4,371 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google Then Woosmap</title>
+    <style>
+        code {
+            font-family: Consolas, Courier, monospace;
+            color: #333;
+            padding: 0.2em 0.4em;
+            font-size: 0.9em;
+            background: rgb(247, 247, 247);
+        }
+
+        pre {
+            margin: 0;
+            margin-top: 0.5em;
+        }
+
+        .string {
+            color: green;
+        }
+
+        .number {
+            color: darkorange;
+        }
+
+        .boolean {
+            color: blue;
+        }
+
+        .null {
+            color: magenta;
+        }
+
+        .key {
+            color: red;
+        }
+
+        body {
+            background: url(https://wgs3.s3.amazonaws.com/perso/ga/mockup/background-home.svg) no-repeat, linear-gradient(301deg, #015180, #0277BD);
+            background-position: center bottom, left bottom;
+            background-size: cover, auto;
+            background-attachment: fixed;
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+            margin: 0;
+        }
+
+
+        .wrapper {
+            width: 100%;
+            display: flex;
+            padding: 1em;
+            position: relative;
+            max-height: 700px;
+        }
+
+        @media only screen and (max-width: 720px) {
+            .wrapper {
+                flex-direction: column;
+                max-height: 1200px;
+                width: 100vw;
+                margin: 0;
+                padding: 0;
+                padding-right: 20px !important;
+            }
+
+            .wrapper-search {
+                width: 100% !important;
+                height: 650px;
+                margin-right: 0 !important;
+
+            }
+
+            #result-asset {
+                width: 100% !important;
+                height: 500px;
+                padding: 0 !important;
+
+            }
+        }
+
+        .wrapper-search {
+            width: 50%;
+            margin: 10px;
+            background: rgba(250, 250, 250, 0.2);
+            position: relative;
+            border-radius: 3px;
+        }
+
+        #wrapper-searchbox {
+            height: 50px;
+            border-radius: 3px;
+            display: flex;
+            justify-content: center;
+            padding-top: 1em;
+        }
+
+        #my-input-woosmap {
+        }
+
+        #result-asset {
+            width: 50%;
+            background: #FFF;
+            margin: 10px;
+            padding: 10px;
+            border-radius: 3px;
+        }
+
+        #my-input-woosmap {
+            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+            font-size: 15px;
+            max-width: 320px;
+            border-radius: 3px;
+            border: 0;
+            width: 280px;
+            height: 40px;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+
+        .autocomplete {
+            z-index: 2;
+        }
+
+        #wrapper-map {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 3px;
+        }
+
+
+        .wrapper-search-settings {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            color: #555;
+            z-index: 1;
+            line-height: 25px;
+            font-size: 15px;
+            max-width: 320px;
+            border-radius: 3px;
+            border: 0;
+            width: 300px;
+            padding: 5px;
+            bottom: 10px;
+            background: #fff;
+            -webkit-transition: all 0.2s ease-in-out;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+        }
+
+        fieldset {
+            border: 1px solid #DFDFDF;
+            padding: 5px;
+        }
+
+    </style>
 </head>
 <body style="width: 100%;">
-<a href="./index.html" style="color:red">Default</a> | <a href="./woosmaponly.html">Woosmap Only</a> | <a href="./googleonly.html">Google Only</a><br/><br/>
-<input id="my-input" style="width:320px; padding: 1em; border:1px solid #CCC"
-       placeholder="Search for Addresses and Woosmap..."/>
-<pre style="word-wrap: break-word; white-space: pre-wrap;" id="result-address"></pre>
-<br/>
-<pre style="word-wrap: break-word; white-space: pre-wrap;" id="result-asset"></pre>
+<div class="wrapper">
+    <div class="wrapper-search">
+        <div id="wrapper-searchbox">
+            <input id="my-input-woosmap"
+                   placeholder="Search for ZipCode Or City..."/>
+            <div class="wrapper-search-settings">
+                <fieldset>
+                    <legend>Call Google Places Condition</legend>
+                    <div>
+                        <label>Fuzzy String Matching method <a
+                                href="https://en.wikipedia.org/wiki/Approximate_string_matching">wikipedia</a> </label>
+                        <div><strong>Partial String Similarity</strong>
+                            <a href="https://chairnerd.seatgeek.com/fuzzywuzzy-fuzzy-string-matching-in-python/#partial-string-similarity">blog</a>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="minRatio">Minimum Partial Matching Ratio (%):</label>
+                        <input type="number" id="minRatio" name="minRatio"
+                               min="1" max="100" value="75" onchange="saveSettings()">
+                    </div>
+                    <div>
+                        <input type="radio" id="breakpoint-list-number" name="breakpoint"
+                               value="breakpoint-list-number" checked onclick="saveSettings()">
+                        <label for="breakpoint-list-number">nb results < 5 and Min Ratio</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="breakpoint-perfect-ratio" name="breakpoint"
+                               value="breakpoint-perfect-ratio"
+                               onclick="saveSettings()">
+                        <label for="breakpoint-perfect-ratio">no ratio=100 and Min Ratio</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="fallbackWoosmap" name="fallbackWoosmap"
+                               value="fallbackWoosmap"
+                               checked onclick="saveSettings()">
+                        <label for="fallbackWoosmap">fallback Woosmap</label>
+                    </div>
+                </fieldset>
+
+                <div>
+                    <label for="types-select">Types:</label>
+                    <select id="types-select" onchange="saveSettings()">
+                        <option value="">both</option>
+                        <option value="locality">locality</option>
+                        <option value="postal_code">postal code</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="components-select">Components:</label>
+                    <select id="components-select" onchange="saveSettings()">
+                        <option value="">no restrictions</option>
+                        <option value="gb">United Kingdom</option>
+                        <option value="fr">France</option>
+                        <option value="es">Spain</option>
+                        <option value="it">Italy</option>
+                        <option value="nl">Netherlands</option>
+                        <option value="gb,es">GB and ES</option>
+                        <option value="gb,fr,it">GB and FR and IT</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="minchar">minChars:</label>
+                    <input type="number" id="minchar" name="minchar"
+                           min="0" max="10" value="2" onchange="saveSettings()">
+                </div>
+            </div>
+        </div>
+        <div id="wrapper-map">
+        </div>
+    </div>
+    <pre style="word-wrap: break-word; white-space: pre-wrap; overflow: auto;" id="result-asset"></pre>
+</div>
 <script>
-    var project_key = location.search.split('key=')[1];
-    var config = {};
-    if (project_key) {
-        config.woosmap = {projectKey: project_key}
+    let map;
+    let marker;
+    let rectangle;
+    let autocomplete;
+
+
+    function saveSettings() {
+        const typesSelect = document.getElementById('types-select');
+        autocomplete.woosmap.types = typesSelect.options[typesSelect.selectedIndex].value;
+        const componentSelect = document.getElementById('components-select');
+        const components = componentSelect.options[componentSelect.selectedIndex].value;
+        if (components !== "") {
+            autocomplete.woosmap.componentRestrictions = {country: components.split(",")};
+            autocomplete.google.componentRestrictions = {country: components.split(",")};
+        } else {
+            autocomplete.woosmap.componentRestrictions = {};
+            autocomplete.google.componentRestrictions = {};
+        }
+        autocomplete.autocomplete.minChars = document.getElementById('minchar').value;
+        autocomplete.minRatio = document.getElementById('minRatio').value;
+        autocomplete.fallbackWoosmap = document.getElementById("fallbackWoosmap").checked;
+        autocomplete.searchGoogleWhenPartialResults = document.getElementById("breakpoint-list-number").checked;
+        autocomplete.searchGoogleWhenFullRatio = document.getElementById("breakpoint-perfect-ratio").checked;
+        document.getElementById('my-input-woosmap').value = "";
+
     }
-    new AutocompleteWoosmapSearchBox(document.getElementById('my-input'), config);
-    document.getElementById('my-input').addEventListener('autocomplete-woosmap-selectcomplete', function (evt) {
-        document.getElementById("result-address").innerHTML = '<h2>Place Details <h3>(' + evt.placeDetails.formatted_address + ')</h3></h2>' + JSON.stringify(evt.placeDetails);
-    });
-    document.getElementById('my-input').addEventListener('autocomplete-woosmap-assetcomplete', function (evt) {
-        document.getElementById("result-asset").innerHTML = '<h2>Woosmap Assets <h3>(' + evt.woosmapAssets.map(function (data) {
-            return data.properties.name
-        }) + ')</h3></h2>' + JSON.stringify(evt.woosmapAssets);
-    });
+
+    function syntaxHighlight(json) {
+        if (typeof json != 'string') {
+            json = JSON.stringify(json, undefined, 2);
+        }
+        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, match => {
+            let cls = 'number';
+            if (/^"/.test(match)) {
+                if (/:$/.test(match)) {
+                    cls = 'key';
+                } else {
+                    cls = 'string';
+                }
+            } else if (/true|false/.test(match)) {
+                cls = 'boolean';
+            } else if (/null/.test(match)) {
+                cls = 'null';
+            }
+            return '<span class="' + cls + '">' + match + '</span>';
+        });
+    }
+
+    const config = {
+        woosmap: {projectKey: "foodmarkets-woos"}
+    };
+
+    function zoomAndCenterMap(latlng, viewpoint) {
+        if (marker) {
+            marker.setMap(null);
+        }
+        if (rectangle) {
+            rectangle.setMap(null);
+        }
+        marker = new google.maps.Marker({
+            map,
+            position: latlng,
+            icon: "https://s3.eu-central-1.amazonaws.com/webapp-conf.woosmap.com/woos-6d55bb93-5107-30e5-8d81-85fb905b963c/default.svg"
+        });
+
+        if (viewpoint) {
+            rectangle = new google.maps.Rectangle({
+                strokeColor: '#00b2fc',
+                strokeOpacity: 1,
+                strokeWeight: 3,
+                fillColor: '#00b2fc',
+                fillOpacity: 0.1,
+                map,
+                bounds: viewpoint
+            });
+            map.fitBounds(viewpoint)
+        } else {
+            map.setCenter(latlng);
+            map.setZoom(9);
+        }
+    }
+
+
+    function displayJSONData(data) {
+        document.getElementById("result-asset").innerHTML = '<h3><h2>' + data.label + '</h2></h3>';
+        document.getElementById("result-asset").innerHTML += syntaxHighlight(JSON.stringify(data, undefined, 2));
+    }
+
+
+    function initAutocompleteWoosmap() {
+        autocomplete = new AutocompleteWoosmapSearchBox(document.getElementById('my-input-woosmap'), config);
+
+        document.getElementById('my-input-woosmap').addEventListener('autocomplete-google-selectcomplete', ({placeDetails}) => {
+            placeDetails.label = placeDetails.vicinity;
+            displayJSONData(placeDetails);
+            const myLatLng = placeDetails.geometry.location;
+            let myViewPoint = null;
+            if (placeDetails.geometry.viewport) {
+                myViewPoint = placeDetails.geometry.viewport;
+            }
+            zoomAndCenterMap(myLatLng, myViewPoint);
+
+        });
+
+        document.getElementById('my-input-woosmap').addEventListener('autocomplete-woosmap-selectcomplete', ({woosmapAsset}) => {
+            displayJSONData(woosmapAsset);
+            const myLatLng = {
+                lat: woosmapAsset.location.lat,
+                lng: woosmapAsset.location.lng
+            };
+            let myViewPoint = null;
+            if (woosmapAsset.viewpoint) {
+                myViewPoint = woosmapAsset.viewpoint.bounds;
+            }
+            zoomAndCenterMap(myLatLng, myViewPoint)
+
+        });
+    }
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('wrapper-map'), {
+            center: {lat: 43, lng: 3},
+            zoom: 2,
+            disableDefaultUI: true
+        });
+        initAutocompleteWoosmap();
+    }
+
+
 </script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBn3kw1bNdgmiXAczwr2DcKLAaW-M3nX14&callback=initMap&libraries=places"></script>
+
 </body>
 </html>

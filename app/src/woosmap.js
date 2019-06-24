@@ -1,67 +1,48 @@
-(function () {
-    var _ = require('./utils.js');
-    var defaultConfig = require('./defaultconfig.js').woosmap;
-    var Woosmap = function (input, options) {
-        var me = this;
-        this.input = _.$(input);
-        _.configure(this, defaultConfig, options);
-        this._loadWoosmapReco(function () {
-            me.woosmapReco.setProjectKey(me.projectKey);
-        });
-    };
+(() => {
+    const _ = require('./utils.js');
+    const fuzz = require('fuzzball');
+    const defaultConfig = require('./defaultconfig.js').woosmap;
 
-    Woosmap.prototype = {
-        searchStoresByName: function (searchTerm, callback) {
-            woosmapRecommendation.searchStores({
-                successCallback: function (resp) {
-                    var list = resp.features.map(function (data, index) {
-                        data.index = index;
-                        data.label = data.properties.name;
-                        data.value = data.properties.name;
-                        if (typeof data.properties.address !== 'undefined' && typeof data.properties.address.city !== 'undefined' && typeof data.properties.address.city === "string") {
-                            data.label += ' ' + data.properties.address.city;
-                            data.value += ', ' + data.properties.address.city;
-                        }
-                        return {label: data.label, value: data.value, metadata: data};
-                    });
-                    callback(list, searchTerm);
-                },
-                errorCallback: function () {
-                    callback([], searchTerm);
-                },
-                query: this.queryPattern.split(this.queryReplaceKey).join(searchTerm),
-                storesByPage: this.storesByPage,
-                maxDistance: this.maxDistance
+    class Woosmap {
+        constructor(input, options) {
+            const me = this;
+            this.input = _.$(input);
+            _.configure(this, defaultConfig, options);
+            this._loadWoosmapLocalities(() => {
+                me.woosmapLocalities = new woosmap.localities.AutocompleteService(me.projectKey);
             });
-        },
-        searchNearbyStores: function (latlngObj, callback) {
-            var me = this;
-            this.woosmapReco.searchStores({
-                lat: latlngObj.lat,
-                lng: latlngObj.lng,
-                successCallback: function (resp) {
-                    callback(resp.features);
-                    me.woosmapReco.sendUserSearchedPosition(latlngObj);
-                },
-                errorCallback: function () {
-                    callback([]);
-                },
-                storesByPage: this.storesByPage,
-                maxDistance: this.maxDistance
+        }
+
+        getQueryPredictions(searchTerm, callback) {
+            this.woosmapLocalities.getQueryPredictions({
+                input: searchTerm,
+                types: this.types,
+                data: this.data,
+                components: this.componentRestrictions
+            }, ({localities}) => {
+                const list = localities.map((data, index) => {
+                    data.index = index;
+                    data.label = data.description;
+                    data.value = data.description;
+                    data.typeClass = "woosmap";
+                    data.ratio = fuzz.partial_ratio(fuzz.full_process(searchTerm), data.label);
+                    return {label: data.label, value: data.value, metadata: data};
+                });
+                callback(list, searchTerm);
             });
-        },
-        _loadWoosmapReco: function (callback) {
-            if (typeof this.woosmapReco !== 'undefined')
+        }
+
+        _loadWoosmapLocalities(callback) {
+            if (typeof this.woosmapLocalities !== 'undefined')
                 return;
-            _.getScript('https://recommendation-js.woosmap.com/recommendation.js', function () {
-                this.woosmapReco = window.woosmapRecommendation;
+            _.getScript(defaultConfig.localitiesLibUrl, () => {
                 if (callback) {
                     callback();
                 }
-            }.bind(this));
+            });
 
         }
-    };
+    }
 
     if (typeof self !== "undefined") {
         self.Woosmap = Woosmap;
@@ -72,5 +53,4 @@
     }
 
     return Woosmap;
-
-}());
+})();

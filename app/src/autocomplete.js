@@ -339,6 +339,8 @@
         return $.create("li", {
             innerHTML: html,
             "aria-selected": "false",
+            "class": text.metadata.typeClass,
+            "ratio": text.metadata.ratio ? text.metadata.ratio : 0,
             "id": "autocomplete_list_" + this.count + "_item_" + item_id
         });
     };

@@ -63,7 +63,7 @@ Add `class="autocomplete-woosmap"` and `data-woosmaponly=true` to your input:
 <link href="./autocompletewoosmap.css" rel="stylesheet"></head>
 <script type="text/javascript" src="./autocompletewoosmap.js"></script></body>
 <input class="autocomplete-woosmap" data-woosmaponly=true id="my-input"/>
-``` 
+```
 
 ### Woosmap Assets onSelect
 
@@ -97,7 +97,7 @@ woosmap: {
 },
 autocomplete: {
     minChars: 2,
-    maxItems: 10,
+    maxItems: 12,
     autoFirst: true
 },
 search: {
