@@ -7,10 +7,10 @@ module.exports = {
         language: 'fr',
         region: 'FR',
         version: '3',
-        componentRestrictions: {country: ['fr']},
+        componentRestrictions: '',
     },
     woosmap: {
-        projectKey: 'woos-5fdbad2d-975e-3725-844a-e8917c0d8a3b',
+        projectKey: '',
         componentRestrictions: '',
         types: '',
         data: 'standard',
@@ -18,12 +18,12 @@ module.exports = {
     },
     autocomplete: {
         minChars: 2,
-        maxItems: 15,
+        maxItems: 5,
         autoFirst: true,
-        sort: true
+        sort: true,
+        debounceTime: 100,
     },
     search: {
-        debounceTime: 70,
         minRatio: 75,
         searchGoogleWhenFullRatio: false,
         searchGoogleWhenPartialResults: true,
