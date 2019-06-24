@@ -51,8 +51,6 @@
     <pre style="word-wrap: break-word; white-space: pre-wrap; overflow: auto;" id="result-asset"></pre>
 </div>
 <script>
-    let autocomplete;
-
     const config = {
         woosmap: {projectKey: "foodmarkets-woos"},
         google: {apiKey: "AIzaSyBn3kw1bNdgmiXAczwr2DcKLAaW-M3nX14"}
@@ -64,7 +62,7 @@
     }
 
     function initAutocompleteWoosmap() {
-        autocomplete = new AutocompleteWoosmapSearchBox(document.getElementById('my-input-woosmap'), config);
+        new AutocompleteWoosmapSearchBox(document.getElementById('my-input-woosmap'), config);
 
         document.getElementById('my-input-woosmap').addEventListener('autocomplete-google-selectcomplete', ({placeDetails}) => {
             placeDetails.label = placeDetails.vicinity;
