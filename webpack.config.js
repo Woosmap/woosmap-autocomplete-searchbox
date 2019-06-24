@@ -27,10 +27,7 @@ var webpackConfig = {
             template: 'sample/basic.html',
             inject: 'head'
         }),
-        new ExtractTextPlugin("autocompletewoosmap.css"),
-        new CopyWebpackPlugin([
-            {from: 'app/images', to: 'images'}
-        ]),
+        new ExtractTextPlugin("autocompletewoosmap.css")
     ]
 };
 webpackConfig.module.loaders.push({

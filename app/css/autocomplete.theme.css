@@ -67,9 +67,9 @@
 
 
 li.google::after {
-    background-image: url(../images/google_g_logo.svg);
+    background-image: url('https://images.woosmap.com/google_g_logo.svg');
 }
 
 li.woosmap::after {
-    background-image: url(../images/woosmap-icon.svg);
+    background-image: url('https://images.woosmap.com/woosmap-icon.svg');
 }
