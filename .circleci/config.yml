@@ -1,0 +1,29 @@
+version: 2
+jobs:
+  build-deploy:
+    working_directory: ~/tmp
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - run:
+          name: Install aws cli
+          working_directory: ~/tmp
+          command: |
+            sudo apt install python-pip python-dev
+            sudo pip install awscli
+            aws --version
+      - checkout
+      - run: npm install
+      - run: npm run build
+      - deploy:
+          name: Deploy to S3 if Build OK and branch is Stable
+          command: aws s3 sync build s3://demo.woosmap.com/localities/ --region eu-central-1 --acl public-read
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build-deploy:
+          filters:
+            branches:
+              only: master
