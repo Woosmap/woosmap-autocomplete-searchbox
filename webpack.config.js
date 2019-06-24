@@ -7,7 +7,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var webpackConfig = {
     entry: ['./app/src/init.js', './app/css/autocomplete.base.css', './app/css/autocomplete.theme.css'],
 
-    output: {path: __dirname + '/build', filename: "autocompletewoosmap.js", publicPath: "/"},
+    output: {path: __dirname + '/build', filename: "autocompletewoosmap.js", publicPath: ""},
 
     module: {
         loaders: []
