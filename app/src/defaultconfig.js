@@ -1,7 +1,7 @@
 module.exports = {
     google: {
         clientId: '',
-        apiKey: 'AIzaSyBn3kw1bNdgmiXAczwr2DcKLAaW-M3nX14',
+        apiKey: '',
         channel: '',
         librariesToLoad: ['places'],
         language: 'fr',
