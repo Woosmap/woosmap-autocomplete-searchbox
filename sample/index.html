@@ -201,6 +201,12 @@
                                checked onclick="saveSettings()">
                         <label for="fallbackWoosmap">fallback Woosmap</label>
                     </div>
+                     <div>
+                        <input type="checkbox" id="sortByRatio" name="sortByRatio"
+                               value="sortByRatio"
+                               checked onclick="saveSettings()">
+                        <label for="sortByRatio">Sort results by ratio</label>
+                    </div>
                 </fieldset>
 
                 <div>
@@ -262,6 +268,7 @@
         autocomplete.autocomplete.minChars = document.getElementById('minchar').value;
         autocomplete.minRatio = document.getElementById('minRatio').value;
         autocomplete.fallbackWoosmap = document.getElementById("fallbackWoosmap").checked;
+        autocomplete.autocomplete.sort = document.getElementById("sortByRatio").checked;
         autocomplete.searchGoogleWhenPartialResults = document.getElementById("breakpoint-list-number").checked;
         autocomplete.searchGoogleWhenFullRatio = document.getElementById("breakpoint-perfect-ratio").checked;
         document.getElementById('my-input-woosmap').value = "";

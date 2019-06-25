@@ -71,7 +71,9 @@
                     }
                     if (list.length > 0) {
                         self.autocomplete.filter = ({metadata}) => metadata.ratio >= self.minRatio;
-                        self.autocomplete.sort = (a, b) => b.metadata.ratio - a.metadata.ratio;
+                        if (self.autocomplete.sort) {
+                            self.autocomplete.sort = (a, b) => b.metadata.ratio - a.metadata.ratio;
+                        }
                         for (let i = 0, x = list.length; i < x; i++) {
                             if (self.searchGoogleWhenFullRatio && list[i].metadata.ratio <= 100) {
                                 onlyFullRatio = false;

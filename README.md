@@ -111,6 +111,6 @@ const config = {
 
 
 ## Demos
-https://demo.woosmap.com/localities/
-https://demo.woosmap.com/localities/basic.html
+- https://demo.woosmap.com/localities/
+- https://demo.woosmap.com/localities/basic.html
 
