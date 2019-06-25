@@ -90,7 +90,12 @@
                             }
                             that.autocomplete.filter = () => true;
                             if (listGooglePlacesItems.length > 0) {
-                                const indexes = listGooglePlacesItems.length - listTotalItems.length;
+                                let indexes = listGooglePlacesItems.length;
+                                if ((listGooglePlacesItems.length + listTotalItems.length) > that.autocomplete.maxItems) {
+                                    indexes = that.autocomplete.maxItems - listTotalItems.length;
+                                } else if (listGooglePlacesItems.length > listTotalItems.length) {
+                                    indexes = listGooglePlacesItems.length - listTotalItems.length;
+                                }
                                 for (let i = indexes - 1, x = 0; i >= x; i--) {
                                     listTotalItems.unshift(listGooglePlacesItems[i]);
                                 }
