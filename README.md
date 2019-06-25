@@ -106,7 +106,7 @@ let defaultConfig = {
 | Option | Description | Default |
 | :----- | :---------- | :------ |
 | `minChars` | Minimum characters the user has to type before the autocomplete popup shows up | `2` |
-| `maxItems` | Maximum number of suggestions to display. | `5` |
+| `maxItems` | Maximum number of suggestions to display. Best practice to let it default to 5. Could be set between 1 and 10 as Woosmap Localities and Google Places return both 5 results. | `5` |
 | `autoFirst` | Should the first prediction element be automatically selected?  | `true` |
 | `sort` | Controls if list items are ordered by string matching ratio. if set to `false`, google places are displayed on top of woosmap localities | `true` |
 | `debounceTime` | Time in miliseconds before executing the autocomplete requests when user type | `100` |
@@ -114,7 +114,7 @@ let defaultConfig = {
 ### `search` config
 | Option | Description | Default |
 | :----- | :---------- | :------ |
-| `minRatio` | Minimum string matching ratio  | `2` |
+| `minRatio` | Minimum string matching ratio. If calculated ratio of autocomplete item is under this value, the item is deleted from autocomplete predictions list | `75` |
 | `searchGoogleWhenPartialResults` | Search and populate predictions response with Google Places in case Woosmap Localities return less than `maxItems` results with required `minRatio` | `true` |
 | `fallbackWoosmap` | Controls if you want to display Woosmap Localities even with insufficient ratio (`minRatio` not reached) in case Google Places returns no results | `true` |
 
@@ -138,7 +138,7 @@ let defaultConfig = {
 | `types` |  The types of predictions to return. cf. [documention](https://developers.woosmap.com/guides/search-localities/search-city-postcode/) | '' |
 | `componentRestrictions` | restrict search by componentRestrictions. cf. [documention](https://developers.woosmap.com/guides/search-localities/search-city-postcode/)  | `3` |
 | `data` | Data standard or advanced. cf. [documention](https://developers.woosmap.com/guides/search-localities/search-city-postcode/) | `'standard'` |
-| `localitiesLibUrl` | URL of the Woosmap Localities Library | `'https://sdk.woosmap.com/localities/localities.js'` |
+| `localitiesLibUrl` | URL of the Woosmap Localities Library | `'sdk.woosmap.com/localities/localities.js'` |
 
 
 ### bounds search with componentRestrictions 
@@ -151,7 +151,47 @@ const config = {
 };   
 ```
 
+## Ratio : Partial String Similarity
+
+A **ratio** value is added to each autocomplete item and calculated as a partial levenshtein ratio of the two strings, the input from the user and the value of autocomplete item.
+We use the fuzzy string matching javascript library [fuzzball](https://github.com/nol13/fuzzball.js), port of [fuzzywuzzy](https://github.com/seatgeek/fuzzywuzzy) python library.
+
+For example a search with the term `'blast'` retrieve the following Woosmap localities and corresponding ratio:
+
+```json    
+{
+  "label": "Blaston, Leicestershire, United Kingdom",
+  "matching ratio": 100,
+}{
+  "label": "Blantyre, Southern Region, Malawi",
+  "matching ratio": 80
+}{
+  "label": "Blasbach, Gießen, Germany",
+  "matching ratio": 80
+}{
+  "label": "Blașcovici, Timiş, Romania",
+  "matching ratio": 60
+}{
+  "label": "Blåsbo, Västerås, Sweden",
+  "matching ratio": 60
+}
+```
+
+In the case of a `minRatio` set to `75` and a `maxItems` set to `5` (default values), the widget will populate the autocomplete predictions list with a Google Places call with 2 items (replacing the two items with ratio of 60):
+```json
+{
+  "label": "Blast Lane Sheffield, UK",
+  "matching ratio": 100
+}{
+  "label": "Blasta Brewing Company Goodwood Parade, Burswood WA, Australia",
+  "matching ratio": 100
+}
+```
+
+To learn about Fuzzy String Matching, check (https://chairnerd.seatgeek.com/fuzzywuzzy-fuzzy-string-matching-in-python/)[https://chairnerd.seatgeek.com/fuzzywuzzy-fuzzy-string-matching-in-python/]
+
+
 ## Demos
-- https://demo.woosmap.com/localities/
-- https://demo.woosmap.com/localities/basic.html
+- https://demo.woosmap.com/localities/ (enable you to play with parameter)
+- https://demo.woosmap.com/localities/basic.html (basic implementation with default options)
 
