@@ -37,8 +37,12 @@ Then you need at least to specify your Woosmap Public key and and the Google Api
 </script>
 ```
 
+The load of Google Places is **optional**, as the widget will load it automatically regarding the google options.   
 
 ## Add Listener on Selected Localities or Places details
+
+When a user select a Woosmap Locality or a Google Place from the list of autocomplete predictions, an event is fired with either a Woosmap Locality object or a Google Place Detail object.
+You'll need to register on the Input text two EventListener named `'autocomplete-woosmap-assetcomplete'` and `'autocomplete-google-selectcomplete'`.
 
 ### Woosmap Localities onSelect
 
@@ -46,7 +50,7 @@ Woosmap Localities response Doc : https://developers.woosmap.com/guides/search-l
 
 ```html
 <script>
-    document.getElementById('my-input').addEventListener('autocomplete-woosmap-assetcomplete', function (evt) {
+    document.getElementById('my-input').addEventListener('autocomplete-woosmap-selectcomplete', function (evt) {
         console.log(evt.woosmapAsset);
     });
 </script>
