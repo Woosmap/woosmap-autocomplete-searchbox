@@ -25,7 +25,7 @@ Before you try anything, you need to add an *input* block element and include `a
 <script type="text/javascript" src="./autocompletewoosmap.js"></script></body>
 <input id="my-input"/>
 ```
-Then you need at least to specify your Woosmap **Project Key** and and the Google **Api key** before instantiate the widget with default criteria:
+Then, you need to at least specify your Woosmap **Project Key** and you Google **API key** before instantiating the widget with default criteria:
 ```html
 <script>
     const config = {
@@ -37,7 +37,7 @@ Then you need at least to specify your Woosmap **Project Key** and and the Googl
 </script>
 ```
 
-The load of Google Places is **optional**, as the widget will load it automatically regarding the google options.   
+Loading Google Places is **optional**, since the widget does it automatically according to the Google options.   
 
 ## Add Listener on Selected Localities or Places details
 
@@ -102,6 +102,16 @@ let defaultConfig = {
     }
 };
 ```
+
+### `autocomplete` config
+| Option | Description | Default |
+| :----- | :---------- | :------ |
+| `minChars` | Minimum characters the user has to type before the autocomplete popup shows up | `2` |
+| `maxItems` | Maximum number of suggestions to display. | `5` |
+| `autoFirst` | Should the first prediction element be automatically selected?  | `true` |
+| `sort` | Controls if list items are ordered by string matching ratio. if set to `false`, google places are displayed on top of woosmap localities | `true` |
+| `debounceTime` | Time in miliseconds before executing the autocomplete requests when user type | `100` |
+
 
 ### bounds search with componentRestrictions 
 If you want to restrict your search by country for Woosmap Localities and Google Places, specify the `componentRestrictions` parameter like this:
