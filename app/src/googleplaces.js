@@ -69,7 +69,10 @@
                 librariesParams = `&libraries=${this.librariesToLoad.join(',')}`;
             }
             _.getScript('https://www.google.com/jsapi', () => {
-                let params = `language=${this.language}`;
+                let params = '';
+                if (this.language) {
+                    params += `language=${this.language}`;
+                }
                 if (this.region) {
                     params += `&region=${this.region}`;
                 }

@@ -4,8 +4,6 @@ module.exports = {
         apiKey: '',
         channel: '',
         librariesToLoad: ['places'],
-        language: 'fr',
-        region: 'FR',
         version: '3',
         componentRestrictions: '',
     },

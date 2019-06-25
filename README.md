@@ -73,14 +73,12 @@ let defaultConfig = {
         apiKey: '',
         channel: '',
         librariesToLoad: ['places'],
-        language: 'fr',
-        region: 'FR',
         version: '3',
-        componentRestrictions: {}
+        componentRestrictions: '',
     },
     woosmap: {
         projectKey: '',
-        componentRestrictions: {},
+        componentRestrictions: '',
         types: '',
         data: 'standard',
         localitiesLibUrl: 'https://sdk.woosmap.com/localities/localities.js'
