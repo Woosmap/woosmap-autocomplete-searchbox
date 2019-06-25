@@ -349,15 +349,15 @@
 
         });
 
-        document.getElementById('my-input-woosmap').addEventListener('autocomplete-woosmap-selectcomplete', ({woosmapAsset}) => {
-            displayJSONData(woosmapAsset);
+        document.getElementById('my-input-woosmap').addEventListener('autocomplete-woosmap-selectcomplete', ({woosmapLocality}) => {
+            displayJSONData(woosmapLocality);
             const myLatLng = {
-                lat: woosmapAsset.location.lat,
-                lng: woosmapAsset.location.lng
+                lat: woosmapLocality.location.lat,
+                lng: woosmapLocality.location.lng
             };
             let myViewPoint = null;
-            if (woosmapAsset.viewpoint) {
-                myViewPoint = woosmapAsset.viewpoint.bounds;
+            if (woosmapLocality.viewpoint) {
+                myViewPoint = woosmapLocality.viewpoint.bounds;
             }
             zoomAndCenterMap(myLatLng, myViewPoint)
 

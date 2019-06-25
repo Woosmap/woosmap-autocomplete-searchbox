@@ -41,7 +41,7 @@
             switch (text.metadata.typeClass) {
                 case 'woosmap':
                     Autocomplete.$.fire(this.input, "autocomplete-woosmap-selectcomplete", {
-                        woosmapAsset: text.metadata
+                        woosmapLocality: text.metadata
                     });
                     break;
                 case 'google':

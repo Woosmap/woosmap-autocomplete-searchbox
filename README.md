@@ -51,7 +51,7 @@ Woosmap Localities response Doc : https://developers.woosmap.com/guides/search-l
 ```html
 <script>
     document.getElementById('my-input').addEventListener('autocomplete-woosmap-selectcomplete', function (evt) {
-        console.log(evt.woosmapAsset);
+        console.log(evt.woosmapLocality);
     });
 </script>
 ```
