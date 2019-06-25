@@ -188,7 +188,7 @@ In the case of a `minRatio` set to `75` and a `maxItems` set to `5` (default val
 }
 ```
 
-To learn about Fuzzy String Matching, check (https://chairnerd.seatgeek.com/fuzzywuzzy-fuzzy-string-matching-in-python/)[https://chairnerd.seatgeek.com/fuzzywuzzy-fuzzy-string-matching-in-python/]
+To learn about Fuzzy String Matching, check [https://chairnerd.seatgeek.com/fuzzywuzzy-fuzzy-string-matching-in-python/](https://chairnerd.seatgeek.com/fuzzywuzzy-fuzzy-string-matching-in-python/).
 
 
 ## Demos
