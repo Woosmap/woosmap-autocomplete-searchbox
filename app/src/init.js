@@ -58,7 +58,6 @@
         autocompleteWoosmapInputEvt() {
             const listLocalitiesItems = [];
             let listTotalItems = [];
-            let onlyFullRatio = true;
             if (this.input.value.length >= this.autocomplete.minChars) {
                 this.currentSearch = this.input.value;
                 this.request = {
@@ -75,14 +74,11 @@
                             self.autocomplete.sort = (a, b) => b.metadata.ratio - a.metadata.ratio;
                         }
                         for (let i = 0, x = list.length; i < x; i++) {
-                            if (self.searchGoogleWhenFullRatio && list[i].metadata.ratio <= 100) {
-                                onlyFullRatio = false;
-                            }
                             listLocalitiesItems.push(list[i]);
                         }
                         listTotalItems = listLocalitiesItems.filter(({metadata}) => metadata.ratio >= self.minRatio);
                     }
-                    if ((listTotalItems.length < self.autocomplete.maxItems && (self.searchGoogleWhenPartialResults || onlyFullRatio)) || listTotalItems.length === 0) {
+                    if ((listTotalItems.length < self.autocomplete.maxItems && self.searchGoogleWhenPartialResults) || listTotalItems.length === 0) {
                         const that = self;
                         self.google.getPredictions(self.request, (listGooglePlacesItems, queryInput) => {
                             if (queryInput !== that.autocomplete.input.value) {
