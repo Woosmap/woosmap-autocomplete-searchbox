@@ -1,6 +1,6 @@
 # woosmap-autocomplete-searchbox
 
-This repo is a lightweight and customizable autocomplete widget to search for **Woosmap Localities** and fallback on **Google Places** according to certain specific criteria.
+This repo is a lightweight and customizable autocomplete widget to search for **Woosmap Localities** and fallback on **Google Places** according to a partial string similarity ratio and other certain specific criteria.
 
 ## Installation
 First, fork or download the source code and run the following commands
