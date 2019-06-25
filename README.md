@@ -19,13 +19,13 @@ $ npm run build
 ```
 
 ## Basic Usage
-Before you try anything, you need to add an *input* block element and include autocompletewoosmap.css and autocompletewoosmap.js in your page, via the usual tags:
+Before you try anything, you need to add an *input* block element and include `autocompletewoosmap.css` and `autocompletewoosmap.js` in your page, via the usual tags:
 ```html
 <link href="./autocompletewoosmap.css" rel="stylesheet"></head>
 <script type="text/javascript" src="./autocompletewoosmap.js"></script></body>
 <input id="my-input"/>
 ```
-Then you need at least to specify your Woosmap Public key and and the Google Api key before instantiate the widget with default criteria:
+Then you need at least to specify your Woosmap **Project Key** and and the Google **Api key** before instantiate the widget with default criteria:
 ```html
 <script>
     const config = {
@@ -42,7 +42,7 @@ The load of Google Places is **optional**, as the widget will load it automatica
 ## Add Listener on Selected Localities or Places details
 
 When a user select a Woosmap Locality or a Google Place from the list of autocomplete predictions, an event is fired with either a Woosmap Locality object or a Google Place Detail object.
-You'll need to register on the Input text two EventListener named `'autocomplete-woosmap-assetcomplete'` and `'autocomplete-google-selectcomplete'`.
+You'll need to register on the Input text two EventListener named `'autocomplete-woosmap-selectcomplete'` and `'autocomplete-google-selectcomplete'`.
 
 ### Woosmap Localities onSelect
 
