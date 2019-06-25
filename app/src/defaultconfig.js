@@ -23,7 +23,6 @@ module.exports = {
     },
     search: {
         minRatio: 75,
-        searchGoogleWhenFullRatio: false,
         searchGoogleWhenPartialResults: true,
         fallbackWoosmap: true
     }

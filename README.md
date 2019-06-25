@@ -68,8 +68,8 @@ Place Details response Doc : https://developers.google.com/maps/documentation/ja
 </script>
 ``` 
 
-## Config
-### default config
+## Configuration
+Here is the full default configuration:
 ```js
 let defaultConfig = {
     google: {
@@ -96,7 +96,6 @@ let defaultConfig = {
     },
     search: {
         minRatio: 75,
-        searchGoogleWhenFullRatio: false,
         searchGoogleWhenPartialResults: true,
         fallbackWoosmap: true
     }
@@ -112,6 +111,35 @@ let defaultConfig = {
 | `sort` | Controls if list items are ordered by string matching ratio. if set to `false`, google places are displayed on top of woosmap localities | `true` |
 | `debounceTime` | Time in miliseconds before executing the autocomplete requests when user type | `100` |
 
+### `search` config
+| Option | Description | Default |
+| :----- | :---------- | :------ |
+| `minRatio` | Minimum string matching ratio  | `2` |
+| `searchGoogleWhenPartialResults` | Search and populate predictions response with Google Places in case Woosmap Localities return less than `maxItems` results with required `minRatio` | `true` |
+| `fallbackWoosmap` | Controls if you want to display Woosmap Localities even with insufficient ratio (`minRatio` not reached) in case Google Places returns no results | `true` |
+
+
+### `google` config
+| Option | Description | Default |
+| :----- | :---------- | :------ |
+| `clientId` | ClientID of your google license | '' |
+| `apiKey` | API Key of your google license | '' |
+| `channel` | Channel to track usage of your google license  | '' |
+| `librariesToLoad` | load specific google libraries  | ['places'] |
+| `version` | load specific google version  | `3` |
+| `componentRestrictions` | restrict search by componentRestrictions. cf. [documention](https://developers.google.com/places/web-service/autocomplete)  | '' |
+
+
+### `woosmap` config
+| Option | Description | Default |
+| :----- | :---------- | :------ |
+| `projectKey` | Your woosmap Project public Key   | '' |
+| `componentRestrictions` |  A grouping of places to which you would like to restrict your results. cf. [documention](https://developers.woosmap.com/guides/search-localities/search-city-postcode/) | '' |
+| `types` |  The types of predictions to return. cf. [documention](https://developers.woosmap.com/guides/search-localities/search-city-postcode/) | '' |
+| `componentRestrictions` | restrict search by componentRestrictions. cf. [documention](https://developers.woosmap.com/guides/search-localities/search-city-postcode/)  | `3` |
+| `data` | Data standard or advanced. cf. [documention](https://developers.woosmap.com/guides/search-localities/search-city-postcode/) | `'standard'` |
+| `localitiesLibUrl` | URL of the Woosmap Localities Library | `'https://sdk.woosmap.com/localities/localities.js'` |
+
 
 ### bounds search with componentRestrictions 
 If you want to restrict your search by country for Woosmap Localities and Google Places, specify the `componentRestrictions` parameter like this:
@@ -122,7 +150,6 @@ const config = {
     google: {componentRestrictions: {country: ['UK', 'FR', 'ES']}}
 };   
 ```
-
 
 ## Demos
 - https://demo.woosmap.com/localities/
