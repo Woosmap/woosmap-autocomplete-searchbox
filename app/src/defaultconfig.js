@@ -18,7 +18,7 @@ module.exports = {
         minChars: 3,
         maxItems: 5,
         autoFirst: true,
-        sort: true,
+        sort: false,
         debounceTime: 100,
     },
     search: {

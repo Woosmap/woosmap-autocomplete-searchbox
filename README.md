@@ -91,7 +91,7 @@ let defaultConfig = {
         minChars: 3,
         maxItems: 5,
         autoFirst: true,
-        sort: true,
+        sort: false,
         debounceTime: 100,
     },
     search: {
@@ -108,7 +108,7 @@ let defaultConfig = {
 | `minChars` | Minimum characters the user has to type before the autocomplete popup shows up | `3` |
 | `maxItems` | Maximum number of suggestions to display. Best practice to let it default to 5. Could be set between 1 and 10 as Woosmap Localities and Google Places return both 5 results. | `5` |
 | `autoFirst` | Should the first prediction element be automatically selected?  | `true` |
-| `sort` | Controls if list items are ordered by string matching ratio. if set to `false`, google places are displayed on top of woosmap localities | `true` |
+| `sort` | Controls if list items are ordered by string matching ratio. if set to `false`, google places are displayed on top of woosmap localities | `false` |
 | `debounceTime` | Time in miliseconds before executing the autocomplete requests when user type | `100` |
 
 ### `search` config
