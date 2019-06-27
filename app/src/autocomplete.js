@@ -22,7 +22,6 @@
         options = options || {};
         defaultConfig.data = Autocomplete.DATA;
         defaultConfig.filter = Autocomplete.FILTER_CONTAINS;
-        defaultConfig.sort = options.sort === false ? false : Autocomplete.SORT_BYLENGTH;
         defaultConfig.item = Autocomplete.ITEM;
         defaultConfig.replace = Autocomplete.REPLACE;
 

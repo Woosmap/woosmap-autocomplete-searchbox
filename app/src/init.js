@@ -57,7 +57,7 @@
 
         autocompleteWoosmapInputEvt() {
             const listLocalitiesItems = [];
-            let listTotalItems = [];
+            let fullRatioLocalities = false;
             if (this.input.value.length >= this.autocomplete.minChars) {
                 this.currentSearch = this.input.value;
                 this.request = {
@@ -65,20 +65,31 @@
                 };
                 const self = this;
                 this.woosmap.getQueryPredictions(this.input.value, (list, query) => {
+                    fullRatioLocalities = false;
                     if (query !== self.autocomplete.input.value) {
                         return;
                     }
                     if (list.length > 0) {
                         self.autocomplete.filter = ({metadata}) => metadata.ratio >= self.minRatio;
-                        if (self.autocomplete.sort) {
+                        if (self.autocomplete.sort !== false) {
                             self.autocomplete.sort = (a, b) => b.metadata.ratio - a.metadata.ratio;
                         }
+                        self.autocomplete.item = suggestion => {
+                            const secondary_text = suggestion.metadata.admin_0;
+                            const item_id = suggestion.metadata.index;
+                            return Autocomplete.ITEM(suggestion, self.autocomplete.input.value, item_id, secondary_text);
+                        };
                         for (let i = 0, x = list.length; i < x; i++) {
+                            if (list[i].metadata.ratio === self.breakpointRatio) {
+                                fullRatioLocalities = true;
+                            }
                             listLocalitiesItems.push(list[i]);
                         }
-                        listTotalItems = listLocalitiesItems.filter(({metadata}) => metadata.ratio >= self.minRatio);
+                        if (fullRatioLocalities) {
+                            self.autocomplete.container.classList.remove("google");
+                        }
                     }
-                    if ((listTotalItems.length < self.autocomplete.maxItems && self.searchGoogleWhenPartialResults) || listTotalItems.length === 0) {
+                    if (!fullRatioLocalities) {
                         const that = self;
                         self.google.getPredictions(self.request, (listGooglePlacesItems, queryInput) => {
                             if (queryInput !== that.autocomplete.input.value) {
@@ -86,21 +97,24 @@
                             }
                             that.autocomplete.filter = () => true;
                             if (listGooglePlacesItems.length > 0) {
-                                let indexes = listGooglePlacesItems.length;
-                                if ((listGooglePlacesItems.length + listTotalItems.length) > that.autocomplete.maxItems) {
-                                    indexes = that.autocomplete.maxItems - listTotalItems.length;
-                                } else if (listGooglePlacesItems.length > listTotalItems.length) {
-                                    indexes = listGooglePlacesItems.length - listTotalItems.length;
+                                that.autocomplete.item = suggestion => {
+                                    const offset = suggestion.metadata.matched_substrings[0].offset;
+                                    const length = suggestion.metadata.matched_substrings[0].length;
+                                    const matched_text = suggestion.label.substring(offset, offset + length);
+                                    const secondary_text = suggestion.metadata.structured_formatting.secondary_text;
+                                    const item_id = suggestion.metadata.index;
+                                    return Autocomplete.ITEM(suggestion, matched_text, item_id, secondary_text);
+                                };
+                                that.autocomplete.list = listGooglePlacesItems;
+                                if (!self.autocomplete.container.classList.contains("google")) {
+                                    self.autocomplete.container.classList.add("google");
                                 }
-                                for (let i = indexes - 1, x = 0; i >= x; i--) {
-                                    listTotalItems.unshift(listGooglePlacesItems[i]);
-                                }
-                                that.autocomplete.list = listTotalItems;
                             } else {
                                 while (that.autocomplete.ul.firstChild) {
                                     that.autocomplete.ul.removeChild(that.autocomplete.ul.firstChild);
                                 }
                                 if (that.fallbackWoosmap) {
+                                    self.autocomplete.container.classList.remove("google");
                                     that.autocomplete.list = listLocalitiesItems;
                                 }
                             }

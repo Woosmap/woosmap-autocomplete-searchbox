@@ -184,16 +184,10 @@
                         <input type="number" id="minRatio" name="minRatio"
                                min="1" max="100" value="75" onchange="saveSettings()">
                     </div>
-                    <div>
-                        <input type="radio" id="breakpoint-list-number" name="breakpoint"
-                               value="breakpoint-list-number" checked onclick="saveSettings()">
-                        <label for="breakpoint-list-number">nb results < 5 and Min Ratio</label>
-                    </div>
-                    <div>
-                        <input type="radio" id="breakpoint-perfect-ratio" name="breakpoint"
-                               value="breakpoint-perfect-ratio"
-                               onclick="saveSettings()">
-                        <label for="breakpoint-perfect-ratio">MinRatio and no results</label>
+                     <div>
+                        <label for="breakpointRatio">Breakpoint Ratio (%):</label>
+                        <input type="number" id="breakpointRatio" name="breakpointRatio"
+                               min="1" max="100" value="100" onchange="saveSettings()">
                     </div>
                     <div>
                         <input type="checkbox" id="fallbackWoosmap" name="fallbackWoosmap"
@@ -269,7 +263,7 @@
         autocomplete.minRatio = document.getElementById('minRatio').value;
         autocomplete.fallbackWoosmap = document.getElementById("fallbackWoosmap").checked;
         autocomplete.autocomplete.sort = document.getElementById("sortByRatio").checked;
-        autocomplete.searchGoogleWhenPartialResults = document.getElementById("breakpoint-list-number").checked;
+        autocomplete.breakpointRatio = document.getElementById("breakpointRatio").checked;
         document.getElementById('my-input-woosmap').value = "";
 
     }

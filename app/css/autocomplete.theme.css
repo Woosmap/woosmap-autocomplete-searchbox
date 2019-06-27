@@ -48,8 +48,8 @@
 }
 
 .autocomplete > ul > li > span {
-    color: #8C8C8C;
-    font-size: 0.9em;
+    color: #999;
+    font-size: 0.95em;
 }
 
 .autocomplete li::after {
@@ -65,11 +65,15 @@
     background-size: contain;
 }
 
-
-li.google::after {
-    background-image: url('https://images.woosmap.com/google_g_logo.svg');
-}
-
-li.woosmap::after {
-    background-image: url('https://images.woosmap.com/woosmap-icon.svg');
+.autocomplete.google > ul::after {
+    content: "";
+    padding: 1px 1px 1px 0;
+    height: 18px;
+    box-sizing: border-box;
+    text-align: right;
+    display: block;
+    background-image: url(https://maps.gstatic.com/mapfiles/api-3/images/powered-by-google-on-white3_hdpi.png);
+    background-position: right;
+    background-repeat: no-repeat;
+    background-size: 120px 14px
 }

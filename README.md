@@ -2,6 +2,8 @@
 
 This repo is a lightweight and customizable autocomplete widget to search for **Woosmap Localities** and fallback on **Google Places** according to a partial string similarity ratio and other certain specific criteria.
 
+If Woosmap Localities return no item with matching **Ratio = 100** (`breakpointRatio`), the widget populate predictions response with Google Places. 
+
 ## Installation
 First, fork or download the source code and run the following commands
 
@@ -96,7 +98,7 @@ let defaultConfig = {
     },
     search: {
         minRatio: 75,
-        searchGoogleWhenPartialResults: true,
+        breakpointRatio: true,
         fallbackWoosmap: true
     }
 };
@@ -115,7 +117,7 @@ let defaultConfig = {
 | Option | Description | Default |
 | :----- | :---------- | :------ |
 | `minRatio` | Minimum string matching ratio. If calculated ratio of autocomplete item is under this value, the item is deleted from autocomplete predictions list | `75` |
-| `searchGoogleWhenPartialResults` | Search and populate predictions response with Google Places in case Woosmap Localities return less than `maxItems` results with required `minRatio` | `true` |
+| `breakpointRatio` | Do not Search and populate predictions response with Google Places in case Woosmap Localities return at least one item with required `breakpointRatio` | `100` |
 | `fallbackWoosmap` | Controls if you want to display Woosmap Localities even with insufficient ratio (`minRatio` not reached) in case Google Places returns no results | `true` |
 
 
@@ -177,21 +179,9 @@ For example a search with the term `'blast'` retrieve the following Woosmap loca
 }
 ```
 
-In the case of a `minRatio` set to `75` and a `maxItems` set to `5` (default values), the widget will populate the autocomplete predictions list with a Google Places call with 2 items (replacing the two items with ratio of 60):
-```json
-{
-  "label": "Blast Lane Sheffield, UK",
-  "matching ratio": 100
-}{
-  "label": "Blasta Brewing Company Goodwood Parade, Burswood WA, Australia",
-  "matching ratio": 100
-}
-```
-
 To learn about Fuzzy String Matching, check [https://chairnerd.seatgeek.com/fuzzywuzzy-fuzzy-string-matching-in-python/](https://chairnerd.seatgeek.com/fuzzywuzzy-fuzzy-string-matching-in-python/).
 
 
-## Demos
-- https://demo.woosmap.com/localities/ (enable you to play with parameter)
+## Demo
 - https://demo.woosmap.com/localities/basic.html (basic implementation with default options)
 

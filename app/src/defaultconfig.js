@@ -15,7 +15,7 @@ module.exports = {
         localitiesLibUrl: 'https://sdk.woosmap.com/localities/localities.js'
     },
     autocomplete: {
-        minChars: 3,
+        minChars: 2,
         maxItems: 5,
         autoFirst: true,
         sort: false,
@@ -23,7 +23,7 @@ module.exports = {
     },
     search: {
         minRatio: 75,
-        searchGoogleWhenPartialResults: true,
+        breakpointRatio: 100,
         fallbackWoosmap: true
     }
 };
