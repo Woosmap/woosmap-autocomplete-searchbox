@@ -90,7 +90,7 @@ let defaultConfig = {
         localitiesLibUrl: 'https://sdk.woosmap.com/localities/localities.js'
     },
     autocomplete: {
-        minChars: 3,
+        minChars: 2,
         maxItems: 5,
         autoFirst: true,
         sort: false,
@@ -107,7 +107,7 @@ let defaultConfig = {
 ### `autocomplete` config
 | Option | Description | Default |
 | :----- | :---------- | :------ |
-| `minChars` | Minimum characters the user has to type before the autocomplete popup shows up | `3` |
+| `minChars` | Minimum characters the user has to type before the autocomplete popup shows up | `2` |
 | `maxItems` | Maximum number of suggestions to display. Best practice to let it default to 5. Could be set between 1 and 10 as Woosmap Localities and Google Places return both 5 results. | `5` |
 | `autoFirst` | Should the first prediction element be automatically selected?  | `true` |
 | `sort` | Controls if list items are ordered by string matching ratio. if set to `false`, google places are displayed on top of woosmap localities | `false` |
