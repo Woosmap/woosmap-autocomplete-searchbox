@@ -173,13 +173,6 @@
                 <fieldset>
                     <legend>Call Google Places Condition</legend>
                     <div>
-                        <label>Fuzzy String Matching method <a
-                                href="https://en.wikipedia.org/wiki/Approximate_string_matching">wikipedia</a> </label>
-                        <div><strong>Partial String Similarity</strong>
-                            <a href="https://chairnerd.seatgeek.com/fuzzywuzzy-fuzzy-string-matching-in-python/#partial-string-similarity">blog</a>
-                        </div>
-                    </div>
-                    <div>
                         <label for="minRatio">Minimum Partial Matching Ratio (%):</label>
                         <input type="number" id="minRatio" name="minRatio"
                                min="1" max="100" value="75" onchange="saveSettings()">
@@ -188,18 +181,6 @@
                         <label for="breakpointRatio">Breakpoint Ratio (%):</label>
                         <input type="number" id="breakpointRatio" name="breakpointRatio"
                                min="1" max="100" value="100" onchange="saveSettings()">
-                    </div>
-                    <div>
-                        <input type="checkbox" id="fallbackWoosmap" name="fallbackWoosmap"
-                               value="fallbackWoosmap"
-                               checked onclick="saveSettings()">
-                        <label for="fallbackWoosmap">fallback Woosmap</label>
-                    </div>
-                     <div>
-                        <input type="checkbox" id="sortByRatio" name="sortByRatio"
-                               value="sortByRatio"
-                               onclick="saveSettings()">
-                        <label for="sortByRatio">Sort results by ratio</label>
                     </div>
                 </fieldset>
 
@@ -261,9 +242,7 @@
         }
         autocomplete.autocomplete.minChars = document.getElementById('minchar').value;
         autocomplete.minRatio = document.getElementById('minRatio').value;
-        autocomplete.fallbackWoosmap = document.getElementById("fallbackWoosmap").checked;
-        autocomplete.autocomplete.sort = document.getElementById("sortByRatio").checked;
-        autocomplete.breakpointRatio = document.getElementById("breakpointRatio").checked;
+        autocomplete.breakpointRatio = document.getElementById("breakpointRatio").value;
         document.getElementById('my-input-woosmap').value = "";
 
     }

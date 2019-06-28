@@ -3,6 +3,8 @@
     var _ = require('./utils.js');
     var $ = _.$;
     var defaultConfig = require('./defaultconfig.js').autocomplete;
+    var fold = require('accent-fold');
+    var fuzz = require('fuzzball');
     var Autocomplete = function (input, options) {
         var me = this;
 
@@ -66,11 +68,9 @@
                         if (c === 13 && me.selected) { // Enter
                             evt.preventDefault();
                             me.select();
-                        }
-                        else if (c === 27) { // Esc
+                        } else if (c === 27) { // Esc
                             me.close({reason: "esc"});
-                        }
-                        else if (c === 38 || c === 40) { // Down/Up arrow
+                        } else if (c === 38 || c === 40) { // Down/Up arrow
                             evt.preventDefault();
                             me[c === 38 ? "previous" : "next"]();
                         }
@@ -106,8 +106,7 @@
         if (this.input.hasAttribute("list")) {
             this.list = "#" + this.input.getAttribute("list");
             this.input.removeAttribute("list");
-        }
-        else {
+        } else {
             this.list = this.input.getAttribute("data-list") || options.list || [];
         }
 
@@ -118,11 +117,9 @@
         set list(list) {
             if (Array.isArray(list)) {
                 this._list = list;
-            }
-            else if (typeof list === "string" && list.indexOf(",") > -1) {
+            } else if (typeof list === "string" && list.indexOf(",") > -1) {
                 this._list = list.split(/\s*,\s*/);
-            }
-            else { // Element or CSS selector
+            } else { // Element or CSS selector
                 list = $(list);
 
                 if (list && list.children) {
@@ -301,8 +298,7 @@
 
                     this.status.textContent = this.ul.children.length + " results found";
                 }
-            }
-            else {
+            } else {
                 this.close({reason: "nomatches"});
 
                 this.status.textContent = "No results found";
@@ -331,9 +327,9 @@
     };
 
     Autocomplete.ITEM = function (text, input, item_id, secondary_text) {
-        var html = input.trim() === "" ? text : text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
+        var html = input.trim() === "" ? text : Autocomplete.HIGHLIGHT(text, fold(fuzz.full_process(text)), fold(fuzz.full_process(input.trim())));
         if (typeof secondary_text !== 'undefined' && typeof secondary_text === "string") {
-            html = html.replace(RegExp($.regExpEscape(secondary_text.trim()), "gi"), "<span>$&</span>");
+            html = html.replaceLast(secondary_text, "<span>" + secondary_text + "</span>");
         }
         return $.create("li", {
             innerHTML: html,
@@ -344,6 +340,25 @@
         });
     };
 
+    Autocomplete.HIGHLIGHT = function (text, textFolded, inputFolded) {
+        var re = new RegExp(inputFolded, 'g');
+        var hilite_hints = textFolded.replace(re, '<' + inputFolded + '>');
+        var spos = 0;
+        var highlighted = '';
+        for (var i = 0; i < hilite_hints.length; i++) {
+            var c = text.charAt(spos);
+            var h = hilite_hints.charAt(i);
+            if (h === '<') {
+                highlighted += '<mark>';
+            } else if (h === '>') {
+                highlighted += '</mark>';
+            } else {
+                spos += 1;
+                highlighted += c;
+            }
+        }
+        return highlighted;
+    };
     Autocomplete.REPLACE = function (text) {
         this.input.value = text.value;
     };
@@ -376,7 +391,13 @@
     Suggestion.prototype.toString = Suggestion.prototype.valueOf = function () {
         return "" + this.label;
     };
+    String.prototype.reverse = function () {
+        return this.split('').reverse().join('');
+    };
 
+    String.prototype.replaceLast = function (what, replacement) {
+        return this.reverse().replace(new RegExp(what.reverse()), replacement.reverse()).reverse();
+    };
 // Helpers
 
     $.create = function (tag, o) {
@@ -387,16 +408,13 @@
 
             if (i === "inside") {
                 $(val).appendChild(element);
-            }
-            else if (i === "around") {
+            } else if (i === "around") {
                 var ref = $(val);
                 ref.parentNode.insertBefore(element, ref);
                 element.appendChild(ref);
-            }
-            else if (i in element) {
+            } else if (i in element) {
                 element[i] = val;
-            }
-            else {
+            } else {
                 element.setAttribute(i, val);
             }
         }

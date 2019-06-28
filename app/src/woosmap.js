@@ -25,7 +25,7 @@
                     data.label = data.description;
                     data.value = data.description;
                     data.typeClass = "woosmap";
-                    data.ratio = fuzz.partial_ratio(fuzz.full_process(searchTerm), data.label);
+                    data.ratio = fuzz.partial_ratio(searchTerm, data.label, {useCollator: true});
                     return {label: data.label, value: data.value, metadata: data};
                 });
                 callback(list, searchTerm);

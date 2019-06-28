@@ -80,7 +80,7 @@
                             return Autocomplete.ITEM(suggestion, self.autocomplete.input.value, item_id, secondary_text);
                         };
                         for (let i = 0, x = list.length; i < x; i++) {
-                            if (list[i].metadata.ratio === self.breakpointRatio) {
+                            if (list[i].metadata.ratio >= self.breakpointRatio) {
                                 fullRatioLocalities = true;
                             }
                             listLocalitiesItems.push(list[i]);

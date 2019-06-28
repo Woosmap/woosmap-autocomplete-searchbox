@@ -19,6 +19,7 @@
     "copy-webpack-plugin": "^4.6.0",
     "css-loader": "^0.28.7",
     "fuzzball": "^1.2.2",
+    "accent-fold": "^1.0.1",
     "style-loader": "^0.19.1",
     "cross-env": "^5.0.1",
     "eslint": "^4.3.0",
