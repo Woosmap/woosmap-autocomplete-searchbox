@@ -14,6 +14,12 @@ module.exports = {
         data: 'standard',
         localitiesLibUrl: 'https://sdk.woosmap.com/localities/localities.js'
     },
+    analytics: {
+        enable: true,
+        analyticsUrl: 'https://search-tracking.webgeoservices.com/api/collect/?key={key}&channel={channel}&source={source}&id={id}&description={description}&type={type}&session_id={session_id}',
+        channel: 'analytics-autocomplete-channel',
+        key:'foodmarkets-woos',
+    },
     autocomplete: {
         minChars: 2,
         maxItems: 5,

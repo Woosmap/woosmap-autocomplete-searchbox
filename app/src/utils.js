@@ -20,14 +20,11 @@ module.exports = {
 
             if (typeof initial === "number") {
                 instance[i] = parseInt(attrValue);
-            }
-            else if (initial === false) { // Boolean options must be false by default anyway
+            } else if (initial === false) { // Boolean options must be false by default anyway
                 instance[i] = attrValue !== null;
-            }
-            else if (initial instanceof Function) {
+            } else if (initial instanceof Function) {
                 instance[i] = null;
-            }
-            else {
+            } else {
                 instance[i] = attrValue;
             }
 
@@ -50,8 +47,7 @@ module.exports = {
             scriptElement.onreadystatechange = function () {
                 if (this.readyState === 'complete' || this.readyState === 'loaded') {
                     callback();
-                }
-                else {
+                } else {
                     console.error('Error when loading script ' + scriptUrl);
                 }
             };
@@ -64,6 +60,43 @@ module.exports = {
             };
         }
     },
+    makeRequest: function ({method, url, headers, body}, resolve, reject) {
+        const xhr = new window.XMLHttpRequest();
+        xhr.open(method || "GET", url);
+        if (headers) {
+            Object.keys(headers).forEach(key => {
+                xhr.setRequestHeader(key, headers[key]);
+            });
+        }
+        xhr.onload = () => {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                resolve(xhr.response);
+            } else {
+                reject(xhr.statusText);
+            }
+        };
+        xhr.onerror = () => {
+            reject(xhr.statusText);
+        };
+        xhr.send(body);
+
+        return xhr;
+    },
+    generateUUID: function () {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            let r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    },
+    getUUIDFromSessionStorage: function () {
+        return window.sessionStorage.getItem('woosAnalyticsUUID');
+    },
+    saveUUIDToSessionStorage: function (uuid) {
+        if (typeof window.sessionStorage !== 'undefined') {
+            window.sessionStorage.setItem('woosAnalyticsUUID',uuid);
+        }
+    },
+
     $: function (expr, con) {
         return typeof expr === "string" ? (con || document).querySelector(expr) : expr || null;
     },

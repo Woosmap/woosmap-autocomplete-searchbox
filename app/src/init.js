@@ -2,6 +2,7 @@
     const GooglePlaces = require('./googleplaces');
     const Autocomplete = require('./autocomplete.js');
     const Woosmap = require('./woosmap.js');
+    const Analytics = require ('./analytics.js');
     const _ = require('./utils.js');
     const defaultSearchConfig = require('./defaultconfig.js').search;
 
@@ -15,6 +16,7 @@
             const searchOptions = options.search || {};
             const woosmapOptions = options.woosmap || {};
             const autocompleteOptions = options.autocomplete || {};
+            const analyticsOptions = options.analytics || {};
 
             defaultSearchConfig.inputEvt = this.autocompleteWoosmapInputEvt;
             defaultSearchConfig.selectComplete = this.autocompleteSelectComplete;
@@ -23,6 +25,7 @@
             this.google = new GooglePlaces(input, googleOptions);
             this.woosmap = new Woosmap(input, woosmapOptions);
             this.autocomplete = new Autocomplete(input, autocompleteOptions);
+            this.analytics = new Analytics(input, analyticsOptions);
 
             this.currentSearch = '';
 
@@ -40,11 +43,14 @@
         autocompleteSelectComplete({text}) {
             switch (text.metadata.typeClass) {
                 case 'woosmap':
+                    this.analytics.trackSearch('localities',text.metadata.public_id, text.metadata.searchedTerm, text.metadata.type);
                     Autocomplete.$.fire(this.input, "autocomplete-woosmap-selectcomplete", {
                         woosmapLocality: text.metadata
                     });
                     break;
                 case 'google':
+                    console.log(text.metadata);
+                    this.analytics.trackSearch('google-places',text.metadata.place_id, text.metadata.searchedTerm, text.metadata.types[0]);
                     this.google.getDetails(text.metadata.place_id,
                         placeDetails =>
                             Autocomplete.$.fire(this.input, "autocomplete-google-selectcomplete",

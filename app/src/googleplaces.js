@@ -24,6 +24,7 @@
                         data.index = index + 5;
                         data.label = data.structured_formatting.main_text;
                         data.typeClass = "google";
+                        data.searchedTerm = request.input;
                         if (typeof data.structured_formatting.secondary_text !== 'undefined') {
                             data.label += ` ${data.structured_formatting.secondary_text}`;
                         }
