@@ -17,7 +17,7 @@ module.exports = {
     analytics: {
         analyticsUrl: 'https://search-tracking.webgeoservices.com/api/collect/?key={key}&channel={channel}&source={source}&id={id}&input={input}&description={description}&type={type}&session_id={session_id}',
         channel: 'analytics-autocomplete-channel',
-        key: 'foodmarkets-woos',
+        key: '',
     },
     autocomplete: {
         minChars: 2,

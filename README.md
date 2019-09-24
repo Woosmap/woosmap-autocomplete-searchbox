@@ -100,7 +100,12 @@ let defaultConfig = {
         minRatio: 75,
         breakpointRatio: true,
         fallbackWoosmap: true
-    }
+    },
+    analytics: {
+        analyticsUrl: 'https://search-tracking.webgeoservices.com/api/collect/?key={key}&channel={channel}&source={source}&id={id}&input={input}&description={description}&type={type}&session_id={session_id}',
+        channel: 'analytics-autocomplete-channel',
+        key: '',
+    },
 };
 ```
 
@@ -142,6 +147,13 @@ let defaultConfig = {
 | `data` | Data standard or advanced. cf. [documention](https://developers.woosmap.com/guides/search-localities/search-city-postcode/) | `'standard'` |
 | `localitiesLibUrl` | URL of the Woosmap Localities Library | `'sdk.woosmap.com/localities/localities.js'` |
 
+### `analytics` config
+| Option | Description | Default |
+| :----- | :---------- | :------ |
+| `analyticsUrl` | To track your searched terms and responses | `search-tracking.webgeoservices.com/api/collect/...` |
+| `channel` | to group your analytics by channel | `analytics-autocomplete-channel` |
+| `key` | the woosmap projct key - could be different from the one used in woosmap config | `` |
+
 
 ### bounds search with componentRestrictions 
 If you want to restrict your search by country for Woosmap Localities and Google Places, specify the `componentRestrictions` parameter like this:
@@ -180,6 +192,19 @@ For example a search with the term `'blast'` retrieve the following Woosmap loca
 ```
 
 To learn about Fuzzy String Matching, check [https://chairnerd.seatgeek.com/fuzzywuzzy-fuzzy-string-matching-in-python/](https://chairnerd.seatgeek.com/fuzzywuzzy-fuzzy-string-matching-in-python/).
+
+
+## Tracking Your Search 
+
+By default this widget allow you to track the searched tems, searched seelected item and responses.
+Data are stored on Woosmap Servers. 
+To configure it for your project, set the following parameters 
+
+```js
+const config = {
+    analytics: {key: "my-project", channel: "my-channel"}
+};
+```
 
 
 ## Demo
