@@ -196,7 +196,7 @@ To learn about Fuzzy String Matching, check [https://chairnerd.seatgeek.com/fuzz
 
 ## Tracking Your Search 
 
-By default this widget allow you to track the searched tems, searched seelected item and responses.
+By default this widget allow you to track the searched tems, searched selected item and responses.
 Data are stored on Woosmap Servers. 
 To configure it for your project, set the following parameters 
 
