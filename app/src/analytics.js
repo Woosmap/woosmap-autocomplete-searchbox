@@ -8,7 +8,7 @@
             _.configure(this, defaultConfig, options);
         }
 
-        trackSearch(source, id, desc, type) {
+        trackSearch(source, id, text_input, text_selected, type) {
             let session_id = _.getUUIDFromSessionStorage();
             if (session_id === null) {
                 _.saveUUIDToSessionStorage(_.generateUUID());
@@ -19,7 +19,8 @@
                 .replace('{channel}', this.channel)
                 .replace('{source}', source)
                 .replace('{id}', id)
-                .replace('{description}', desc)
+                .replace('{input}', text_input)
+                .replace('{description}', text_selected)
                 .replace('{type}', type)
                 .replace('{session_id}', session_id);
 
@@ -27,7 +28,7 @@
                     console.log(response);
                 }.bind(this),
                 function (statusText) {
-                    console.error('Error while recording analytics for ' + desc + ' (' + statusText + ')');
+                    console.error('Error while recording analytics for ' + text_selected + ' (' + statusText + ')');
                 });
         }
     }

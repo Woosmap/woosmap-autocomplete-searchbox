@@ -15,10 +15,9 @@ module.exports = {
         localitiesLibUrl: 'https://sdk.woosmap.com/localities/localities.js'
     },
     analytics: {
-        enable: true,
-        analyticsUrl: 'https://search-tracking.webgeoservices.com/api/collect/?key={key}&channel={channel}&source={source}&id={id}&description={description}&type={type}&session_id={session_id}',
+        analyticsUrl: 'https://search-tracking.webgeoservices.com/api/collect/?key={key}&channel={channel}&source={source}&id={id}&input={input}&description={description}&type={type}&session_id={session_id}',
         channel: 'analytics-autocomplete-channel',
-        key:'foodmarkets-woos',
+        key: 'foodmarkets-woos',
     },
     autocomplete: {
         minChars: 2,
