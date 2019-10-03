@@ -41,7 +41,6 @@
         }
 
         autocompleteSelectComplete({text}) {
-            console.log(text);
             switch (text.metadata.typeClass) {
                 case 'woosmap':
                     this.analytics.trackSearch('localities', text.metadata.public_id, text.metadata.searchedTerm, text.metadata.label, text.metadata.type);

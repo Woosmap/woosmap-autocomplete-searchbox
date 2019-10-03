@@ -98,7 +98,7 @@ let defaultConfig = {
     },
     search: {
         minRatio: 75,
-        breakpointRatio: true,
+        breakpointRatio: 100,
         fallbackWoosmap: true
     },
     analytics: {
