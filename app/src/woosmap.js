@@ -16,7 +16,7 @@
         getQueryPredictions(searchTerm, callback) {
             this.woosmapLocalities.getQueryPredictions({
                 input: searchTerm,
-                types: this.types,
+                types: this.types.join("|"),
                 data: this.data,
                 components: this.componentRestrictions
             }, ({localities}) => {

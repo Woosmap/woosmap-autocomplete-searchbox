@@ -189,7 +189,9 @@
                 <div>
                     <label for="types-select">Types:</label>
                     <select id="types-select" onchange="saveSettings()">
-                        <option value="locality|postal_code|admin_level|country|airport|train_station|metro_station|shopping">all available</option>
+                        <option value="locality|postal_code|admin_level|country|airport|train_station|metro_station|shopping">
+                            all available
+                        </option>
                         <option value="locality">locality</option>
                         <option value="postal_code">postcode</option>
                         <option value="admin_level">admin_level</option>
@@ -234,14 +236,14 @@
     const config = {
         woosmap: {
             projectKey: "foodmarkets-woos",
-            types: "locality|postal_code|admin_level|country|airport|train_station|metro_station|shopping"
+            types: ["locality", "postal_code", "admin_level", "country", "airport", "metro_station", "train_station", "shopping"]
         },
         google: {apiKey: "AIzaSyBn3kw1bNdgmiXAczwr2DcKLAaW-M3nX14"}
     };
 
     function saveSettings() {
         const typesSelect = document.getElementById('types-select');
-        autocomplete.woosmap.types = typesSelect.options[typesSelect.selectedIndex].value;
+        autocomplete.woosmap.types = typesSelect.options[typesSelect.selectedIndex].value.split("|");
         const componentSelect = document.getElementById('components-select');
         const components = componentSelect.options[componentSelect.selectedIndex].value;
         if (components !== "") {
