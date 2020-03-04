@@ -340,7 +340,7 @@
     };
 
     Autocomplete.HIGHLIGHT = function (text, textFolded, inputFolded) {
-        var re = new RegExp(inputFolded, 'g');
+        var re = new RegExp($.regExpEscape(inputFolded), 'g');
         var hilite_hints = textFolded.replace(re, '<' + inputFolded + '>');
         var spos = 0;
         var highlighted = '';
