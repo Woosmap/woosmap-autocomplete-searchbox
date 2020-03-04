@@ -4,7 +4,6 @@
     var $ = _.$;
     var defaultConfig = require('./defaultconfig.js').autocomplete;
     var fold = require('accent-fold');
-    var fuzz = require('fuzzball');
     var Autocomplete = function (input, options) {
         var me = this;
 
@@ -327,7 +326,7 @@
     };
 
     Autocomplete.ITEM = function (text, input, item_id, secondary_text) {
-        var html = input.trim() === "" ? text : Autocomplete.HIGHLIGHT(text, fold(fuzz.full_process(text)), fold(fuzz.full_process(input.trim())));
+        var html = input.trim() === "" ? text : Autocomplete.HIGHLIGHT(text, fold(text), fold(input.trim()));
         if (typeof secondary_text !== 'undefined' && typeof secondary_text === "string") {
             html = html.replaceLast(secondary_text, "<span>" + secondary_text + "</span>");
         }
@@ -396,7 +395,7 @@
     };
 
     String.prototype.replaceLast = function (what, replacement) {
-        return this.reverse().replace(new RegExp(what.reverse()), replacement.reverse()).reverse();
+        return this.replace(new RegExp($.regExpEscape(what) + '$'), replacement);
     };
 // Helpers
 
