@@ -136,9 +136,8 @@ let defaultConfig = {
 | Option | Description | Default |
 | :----- | :---------- | :------ |
 | `projectKey` | Your woosmap Project public Key   | '' |
-| `componentRestrictions` |  A grouping of places to which you would like to restrict your results. cf. [documention](https://developers.woosmap.com/guides/search-localities/search-city-postcode/) | '' |
+| `componentRestrictions` |  A grouping of places to which you would like to restrict your results. cf. [documention](https://developers.woosmap.com/products/localities/search-city-postcode/#components) | '' |
 | `types` |  The types of predictions to return. cf. [documention](https://developers.woosmap.com/guides/search-localities/search-city-postcode/) | '' |
-| `componentRestrictions` | restrict search by componentRestrictions. cf. [documention](https://developers.woosmap.com/guides/search-localities/search-city-postcode/)  | `3` |
 | `data` | Data standard or advanced. cf. [documention](https://developers.woosmap.com/guides/search-localities/search-city-postcode/) | `'standard'` |
 | `localitiesLibUrl` | URL of the Woosmap Localities Library | `'sdk.woosmap.com/localities/localities.js'` |
 
