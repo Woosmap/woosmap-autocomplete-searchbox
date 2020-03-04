@@ -12,6 +12,7 @@ module.exports = {
         componentRestrictions: '',
         types: '',
         data: 'standard',
+        language: '',
         localitiesLibUrl: 'https://sdk.woosmap.com/localities/localities.js'
     },
     autocomplete: {

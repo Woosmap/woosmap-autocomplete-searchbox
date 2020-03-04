@@ -18,7 +18,8 @@
                 input: searchTerm,
                 types: this.types.join("|"),
                 data: this.data,
-                components: this.componentRestrictions
+                components: this.componentRestrictions,
+                language: this.language,
             }, ({localities}) => {
                 const list = localities.map((data, index) => {
                     data.index = index;

@@ -87,7 +87,7 @@ let defaultConfig = {
         componentRestrictions: '',
         types: '',
         data: 'standard',
-        localitiesLibUrl: 'https://sdk.woosmap.com/localities/localities.js'
+        language: ''
     },
     autocomplete: {
         minChars: 2,
@@ -139,7 +139,6 @@ let defaultConfig = {
 | `componentRestrictions` |  A grouping of places to which you would like to restrict your results. cf. [documention](https://developers.woosmap.com/products/localities/search-city-postcode/#components) | '' |
 | `types` |  An array of types of predictions to return. cf. [documention](https://developers.woosmap.com/products/localities/search-city-postcode/#types-typespostal_code) | '' example: `["locality", "metro_station"]` |
 | `data` | Data standard or advanced. cf. [documention](https://developers.woosmap.com/guides/search-localities/search-city-postcode/) | `'standard'` |
-| `localitiesLibUrl` | URL of the Woosmap Localities Library | `'sdk.woosmap.com/localities/localities.js'` |
 
 ### bounds search with componentRestrictions 
 If you want to restrict your search by country for Woosmap Localities and Google Places, specify the `componentRestrictions` parameter like this:
