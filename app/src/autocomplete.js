@@ -328,10 +328,10 @@
     Autocomplete.ITEM = function (text, input, item_id, secondary_text) {
         var html = input.trim() === "" ? text : Autocomplete.HIGHLIGHT(text, fold(text), fold(input.trim()));
         if (typeof secondary_text !== 'undefined' && typeof secondary_text === "string") {
-            html = html.replaceLast(secondary_text, "<span>" + secondary_text + "</span>");
+            html = html.replaceLast(secondary_text, "<span class='secondary-text'>" + secondary_text + "</span>");
         }
         return $.create("li", {
-            innerHTML: html,
+            innerHTML: "<span class='locality-icon'></span><span class='locality-text'>" + html + "</span>",
             "aria-selected": "false",
             "class": text.metadata.typeClass,
             "ratio": text.metadata.ratio ? text.metadata.ratio : 0,

@@ -23,7 +23,8 @@
                     const list = results.map((data, index) => {
                         data.index = index + 5;
                         data.label = data.structured_formatting.main_text;
-                        data.typeClass = "google";
+                        data.typeClass = "google " + data.types.join(" ");
+                        data.dataType = "google";
                         data.searchedTerm = request.input;
                         if (typeof data.structured_formatting.secondary_text !== 'undefined') {
                             data.label += ` ${data.structured_formatting.secondary_text}`;

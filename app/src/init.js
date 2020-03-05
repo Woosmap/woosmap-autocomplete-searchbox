@@ -38,7 +38,7 @@
         }
 
         autocompleteSelectComplete({text}) {
-            switch (text.metadata.typeClass) {
+            switch (text.metadata.dataType) {
                 case 'woosmap':
                     Autocomplete.$.fire(this.input, "autocomplete-woosmap-selectcomplete", {
                         woosmapLocality: text.metadata

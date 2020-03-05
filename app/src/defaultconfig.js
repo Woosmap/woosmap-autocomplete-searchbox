@@ -10,7 +10,7 @@ module.exports = {
     woosmap: {
         projectKey: '',
         componentRestrictions: '',
-        types: '',
+        types: [],
         data: 'standard',
         language: '',
         localitiesLibUrl: 'https://sdk.woosmap.com/localities/localities.js'
@@ -18,7 +18,7 @@ module.exports = {
     autocomplete: {
         minChars: 2,
         maxItems: 5,
-        autoFirst: true,
+        autoFirst: false,
         sort: false,
         debounceTime: 100,
     },
