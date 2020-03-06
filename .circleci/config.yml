@@ -17,7 +17,7 @@ jobs:
       - run: npm run build
       - deploy:
           name: Deploy to S3 if Build OK and branch is Stable
-          command: aws s3 sync build s3://demo.woosmap.com/localities/ --region eu-west-3 --acl public-read
+          command: aws s3 sync dist s3://demo.woosmap.com/localities/ --region eu-west-3 --acl public-read
 
 workflows:
   version: 2
