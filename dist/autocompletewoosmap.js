@@ -1586,7 +1586,7 @@ module.exports = __webpack_require__(31);
                             self.autocomplete.container.classList.remove("google");
                         }
                     }
-                    if (!fullRatioLocalities) {
+                    if (!fullRatioLocalities && self.breakpointRatio > 0) {
                         const that = self;
                         self.google.getPredictions(self.request, (listGooglePlacesItems, queryInput) => {
                             if (queryInput !== that.autocomplete.input.value) {
