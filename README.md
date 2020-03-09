@@ -1,3 +1,5 @@
+# Autocomplete Localities Fallback Google Places
+
 Lightweight and customizable autocomplete widget to search for [Woosmap Localities](https://developers.woosmap.com/products/localities/search-city-postcode/) and fallback on **Google Places** according to a partial string similarity ratio and other certain specific criteria.
 
 Official Documentation: <https://community.woosmap.com/localities-fallback-googleplaces/> 
