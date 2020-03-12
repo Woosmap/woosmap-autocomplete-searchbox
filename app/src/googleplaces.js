@@ -48,7 +48,8 @@
         getDetails(place_id, callback) {
             const me = this;
             const request = {
-                placeId: place_id
+                placeId: place_id,
+                fields: this.fields
             };
             this.placesService.getDetails(request, (result, status) => {
                 if (status === google.maps.places.PlacesServiceStatus.OK) {
@@ -57,7 +58,7 @@
                     callback(result, {lat, lng});
                 } else if (status === google.maps.places.PlacesServiceStatus.UNKNOWN_ERROR || status === google.maps.places.PlacesServiceStatus.OVER_QUERY_LIMIT) {
                     window.setTimeout(() => {
-                        me.getDetails(place_id, callback);
+                        me.getDetails(request, callback);
                     }, 100);
                 } else {
                     console.error(status);
