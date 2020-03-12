@@ -2,6 +2,7 @@
     const GooglePlaces = require('./googleplaces');
     const Autocomplete = require('./autocomplete.js');
     const Woosmap = require('./woosmap.js');
+    const Analytics = require('./analytics.js');
     const _ = require('./utils.js');
     const defaultSearchConfig = require('./defaultconfig.js').search;
 
@@ -15,6 +16,7 @@
             const searchOptions = options.search || {};
             const woosmapOptions = options.woosmap || {};
             const autocompleteOptions = options.autocomplete || {};
+            const analyticsOptions = options.analytics || {};
 
             defaultSearchConfig.inputEvt = this.autocompleteWoosmapInputEvt;
             defaultSearchConfig.selectComplete = this.autocompleteSelectComplete;
@@ -23,6 +25,7 @@
             this.google = new GooglePlaces(input, googleOptions);
             this.woosmap = new Woosmap(input, woosmapOptions);
             this.autocomplete = new Autocomplete(input, autocompleteOptions);
+            this.analytics = new Analytics(input, analyticsOptions);
 
             this.currentSearch = '';
 
@@ -43,12 +46,18 @@
                     Autocomplete.$.fire(this.input, "autocomplete-woosmap-selectcomplete", {
                         woosmapLocality: text.metadata
                     });
+                    if (this.analytics.tracking) {
+                        this.analytics.trackSearch(this.analytics.eventCategoryWoosmap, text.metadata.public_id, text.metadata.searchedTerm, text.metadata.label, [text.metadata.type]);
+                    }
                     break;
                 case 'google':
                     this.google.getDetails(text.metadata.place_id,
                         placeDetails =>
                             Autocomplete.$.fire(this.input, "autocomplete-google-selectcomplete",
                                 {placeDetails}));
+                    if (this.analytics.tracking) {
+                        this.analytics.trackSearch(this.analytics.eventCategoryGoogle, text.metadata.place_id, text.metadata.searchedTerm, text.metadata.label, text.metadata.types);
+                    }
                     break;
                 default:
                     break;
