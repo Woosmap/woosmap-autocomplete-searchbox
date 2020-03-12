@@ -235,6 +235,7 @@ module.exports = {
         librariesToLoad: ['places'],
         version: '3',
         componentRestrictions: '',
+        fields: ['address_component', 'adr_address', 'formatted_address', 'geometry', 'icon', 'name', 'place_id', 'type', 'url', 'vicinity']
     },
     woosmap: {
         projectKey: '',
@@ -255,7 +256,13 @@ module.exports = {
         minRatio: 75,
         breakpointRatio: 100,
         fallbackWoosmap: true
-    }
+    },
+    analytics: {
+        tracking: false,
+        analyticsKey: '',
+        eventCategoryWoosmap: 'woosmap-localities',
+        eventCategoryGoogle: 'google-places'
+    },
 };
 
 /***/ }),
@@ -1487,8 +1494,8 @@ module.exports = function leven(a, b, options) {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(10);
-__webpack_require__(30);
-module.exports = __webpack_require__(31);
+__webpack_require__(31);
+module.exports = __webpack_require__(32);
 
 
 /***/ }),
@@ -1499,6 +1506,7 @@ module.exports = __webpack_require__(31);
     const GooglePlaces = __webpack_require__(11);
     const Autocomplete = __webpack_require__(26);
     const Woosmap = __webpack_require__(29);
+    const Analytics = __webpack_require__(30);
     const _ = __webpack_require__(1);
     const defaultSearchConfig = __webpack_require__(2).search;
 
@@ -1512,6 +1520,7 @@ module.exports = __webpack_require__(31);
             const searchOptions = options.search || {};
             const woosmapOptions = options.woosmap || {};
             const autocompleteOptions = options.autocomplete || {};
+            const analyticsOptions = options.analytics || {};
 
             defaultSearchConfig.inputEvt = this.autocompleteWoosmapInputEvt;
             defaultSearchConfig.selectComplete = this.autocompleteSelectComplete;
@@ -1520,6 +1529,7 @@ module.exports = __webpack_require__(31);
             this.google = new GooglePlaces(input, googleOptions);
             this.woosmap = new Woosmap(input, woosmapOptions);
             this.autocomplete = new Autocomplete(input, autocompleteOptions);
+            this.analytics = new Analytics(input, analyticsOptions);
 
             this.currentSearch = '';
 
@@ -1540,12 +1550,18 @@ module.exports = __webpack_require__(31);
                     Autocomplete.$.fire(this.input, "autocomplete-woosmap-selectcomplete", {
                         woosmapLocality: text.metadata
                     });
+                    if (this.analytics.tracking) {
+                        this.analytics.trackSearch(this.analytics.eventCategoryWoosmap, text.metadata.public_id, text.metadata.searchedTerm, text.metadata.label, [text.metadata.type]);
+                    }
                     break;
                 case 'google':
                     this.google.getDetails(text.metadata.place_id,
                         placeDetails =>
                             Autocomplete.$.fire(this.input, "autocomplete-google-selectcomplete",
                                 {placeDetails}));
+                    if (this.analytics.tracking) {
+                        this.analytics.trackSearch(this.analytics.eventCategoryGoogle, text.metadata.place_id, text.metadata.searchedTerm, text.metadata.label, text.metadata.types);
+                    }
                     break;
                 default:
                     break;
@@ -1720,7 +1736,8 @@ module.exports = __webpack_require__(31);
         getDetails(place_id, callback) {
             const me = this;
             const request = {
-                placeId: place_id
+                placeId: place_id,
+                fields: this.fields
             };
             this.placesService.getDetails(request, (result, status) => {
                 if (status === google.maps.places.PlacesServiceStatus.OK) {
@@ -1729,7 +1746,7 @@ module.exports = __webpack_require__(31);
                     callback(result, {lat, lng});
                 } else if (status === google.maps.places.PlacesServiceStatus.UNKNOWN_ERROR || status === google.maps.places.PlacesServiceStatus.OVER_QUERY_LIMIT) {
                     window.setTimeout(() => {
-                        me.getDetails(place_id, callback);
+                        me.getDetails(request, callback);
                     }, 100);
                 } else {
                     console.error(status);
@@ -6374,12 +6391,76 @@ module.exports = {"ẚ":"a","Á":"a","á":"a","À":"a","à":"a","Ă":"a","ă":"a
 
 /***/ }),
 /* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+(() => {
+    const _ = __webpack_require__(1);
+    const defaultConfig = __webpack_require__(2).analytics;
+
+    class Analytics {
+        constructor(input, options) {
+            this.input = _.$(input);
+            _.configure(this, defaultConfig, options);
+            if (this.tracking) {
+                const ga = window[window['GoogleAnalyticsObject'] || 'ga'];
+                if (typeof ga !== 'function') {
+                    this._loadGoogleAnalytics();
+                }
+            }
+        }
+
+        trackSearch(source, id, text_input, text_selected, type) {
+            if (window.ga) {
+                ga('send', {
+                    hitType: 'event',
+                    eventCategory: `${source}`,
+                    eventAction: `${type[0]}`,
+                    eventLabel: `${text_input} ({label:"${text_selected}",id:"${id}")`
+                });
+            }
+        }
+
+        _loadGoogleAnalytics(callback) {
+            (function (i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r;
+                i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments);
+                };
+                i[r].l = 1 * new Date();
+                a = s.createElement(o);
+                m = s.getElementsByTagName(o)[0];
+                a.async = 1;
+                a.src = g;
+                m.parentNode.insertBefore(a, m);
+            })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+            if (window.ga) {
+                window.ga('create', this.analyticsKey, 'auto');
+            }
+            if (callback) {
+                callback();
+            }
+        }
+    }
+
+    if (typeof self !== "undefined") {
+        self.Analytics = Analytics;
+    }
+
+    if (typeof module === "object" && module.exports) {
+        module.exports = Analytics;
+    }
+
+    return Analytics;
+})();
+
+/***/ }),
+/* 31 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
