@@ -67,38 +67,35 @@
         }
 
         _loadPlacesApi(callback) {
-            let librariesParams = '';
-            if (this.librariesToLoad.length > 0) {
-                librariesParams = `&libraries=${this.librariesToLoad.join(',')}`;
+            let params = '';
+            let urlPlacesApi = 'https://maps.googleapis.com/maps/api/js?';
+
+            if (this.language) {
+                params += `&language=${this.language}`;
             }
-            _.getScript('https://www.google.com/jsapi', () => {
-                let params = '';
-                if (this.language) {
-                    params += `language=${this.language}`;
+            if (this.region) {
+                params += `&region=${this.region}`;
+            }
+            if (this.clientId) {
+                params += `&client=${this.clientId}`;
+            }
+            if (this.apiKey) {
+                params += `&key=${this.apiKey}`;
+            }
+            if (this.channel) {
+                params += `&channel=${this.channel}`;
+            }
+            if (this.librariesToLoad.length > 0) {
+                params += `&libraries=${this.librariesToLoad.join(',')}`;
+            }
+            urlPlacesApi += params;
+            const me = this;
+            _.getScript(urlPlacesApi, () => {
+                me.autocompleteService = new google.maps.places.AutocompleteService();
+                me.placesService = new google.maps.places.PlacesService(document.createElement('div'));
+                if (callback) {
+                    callback();
                 }
-                if (this.region) {
-                    params += `&region=${this.region}`;
-                }
-                if (this.clientId) {
-                    params += `&client=${this.clientId}`;
-                }
-                if (this.apiKey) {
-                    params += `&key=${this.apiKey}`;
-                }
-                if (this.channel) {
-                    params += `&channel=${this.channel}`;
-                }
-                const me = this;
-                google.load('maps', this.version, {
-                    other_params: params + librariesParams,
-                    callback() {
-                        me.autocompleteService = new google.maps.places.AutocompleteService();
-                        me.placesService = new google.maps.places.PlacesService(document.createElement('div'));
-                        if (callback) {
-                            callback();
-                        }
-                    }
-                });
             });
 
         }
