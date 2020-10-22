@@ -18,6 +18,9 @@
         getPredictions(request, callback) {
             const me = this;
             request.componentRestrictions = this.componentRestrictions;
+            if (this.useSessionTokens && ! this.sessionToken)
+                this.sessionToken = new google.maps.places.AutocompleteSessionToken();
+            request.sessionToken = this.sessionToken;
             this.autocompleteService.getPlacePredictions(request, (results, status) => {
                 if (status === google.maps.places.PlacesServiceStatus.OK) {
                     const list = results.map((data, index) => {
@@ -49,8 +52,10 @@
             const me = this;
             const request = {
                 placeId: place_id,
-                fields: this.fields
+                fields: this.fields,
+                sessionToken: this.sessionToken
             };
+            this.sessionToken = null;
             this.placesService.getDetails(request, (result, status) => {
                 if (status === google.maps.places.PlacesServiceStatus.OK) {
                     const lat = result.geometry.location.lat();

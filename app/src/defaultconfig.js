@@ -6,7 +6,8 @@ module.exports = {
         librariesToLoad: ['places'],
         version: '3',
         componentRestrictions: '',
-        fields: ['address_component', 'adr_address', 'formatted_address', 'geometry', 'icon', 'name', 'place_id', 'type', 'url', 'vicinity']
+        fields: ['address_component', 'adr_address', 'formatted_address', 'geometry', 'icon', 'name', 'place_id', 'type', 'url', 'vicinity'],
+        useSessionTokens: true
     },
     woosmap: {
         projectKey: '',
