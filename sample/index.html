@@ -205,14 +205,14 @@
                 <div>
                     <label for="components-select">Components:</label>
                     <select id="components-select" onchange="saveSettings()">
-                        <option value="">no restrictions</option>
-                        <option value="gb">United Kingdom</option>
-                        <option value="fr">France</option>
-                        <option value="es">Spain</option>
-                        <option value="it">Italy</option>
-                        <option value="nl">Netherlands</option>
-                        <option value="gb,es">GB and ES</option>
-                        <option value="gb,fr,it">GB and FR and IT</option>
+                        <option value="" data-woosmapaddress="">no restrictions</option>
+                        <option value="GB" data-woosmapaddress="GBR">United Kingdom</option>
+                        <option value="FR" data-woosmapaddress="FRA">France</option>
+                        <option value="ES" data-woosmapaddress="ESP">Spain</option>
+                        <option value="IT" data-woosmapaddress="ITA">Italy</option>
+                        <option value="NL" data-woosmapaddress="NLD">Netherlands</option>
+                        <option value="GB,ES" data-woosmapaddress="GBR,ESP">GB and ES</option>
+                        <option value="GB,FR,IT" data-woosmapaddress="GBR,ESP,ITA">GB and FR and IT</option>
                     </select>
                 </div>
                 <div>
@@ -247,11 +247,14 @@
         autocomplete.woosmap.types = typesSelect.options[typesSelect.selectedIndex].value.split("|");
         const componentSelect = document.getElementById('components-select');
         const components = componentSelect.options[componentSelect.selectedIndex].value;
+        const componentsISO3 = componentSelect.options[componentSelect.selectedIndex].getAttribute('data-woosmapaddress');
         if (components !== "") {
             autocomplete.woosmap.componentRestrictions = {country: components.split(",")};
+            autocomplete.woosmapaddress.componentRestrictions = {country: componentsISO3.split(",")};
             autocomplete.google.componentRestrictions = {country: components.split(",")};
         } else {
             autocomplete.woosmap.componentRestrictions = {};
+            autocomplete.woosmapaddress.componentRestrictions = {};
             autocomplete.google.componentRestrictions = {};
         }
         autocomplete.autocomplete.minChars = document.getElementById('minchar').value;
@@ -333,6 +336,22 @@
             }
             zoomAndCenterMap(myLatLng, myViewPoint);
 
+        });
+
+        document.getElementById('my-input-woosmap').addEventListener('autocomplete-woosmapaddress-selectcomplete', ({addressDetails}) => {
+            addressDetails.label = addressDetails.formatted_address;
+            displayJSONData(addressDetails);
+            const myLatLng = addressDetails.geometry.location;
+            let myViewPoint = null;
+            if (addressDetails.geometry.viewport) {
+                myViewPoint = {
+                    "south": addressDetails.geometry.viewport.southwest.lat,
+                    "west": addressDetails.geometry.viewport.southwest.lng,
+                    "north": addressDetails.geometry.viewport.northeast.lat,
+                    "east": addressDetails.geometry.viewport.northeast.lng
+                }
+            }
+            zoomAndCenterMap(myLatLng, myViewPoint);
         });
 
         document.getElementById('my-input-woosmap').addEventListener('autocomplete-woosmap-selectcomplete', ({woosmapLocality}) => {
