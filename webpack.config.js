@@ -21,6 +21,11 @@ var webpackConfig = {
             inject: 'head'
         }),
         new HtmlWebpackPlugin({
+            filename: 'address.html',
+            template: 'sample/address.html',
+            inject: 'head'
+        }),
+        new HtmlWebpackPlugin({
             filename: 'basic.html',
             template: 'sample/basic.html',
             inject: 'head'
