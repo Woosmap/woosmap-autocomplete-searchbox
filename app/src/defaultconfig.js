@@ -5,13 +5,14 @@ module.exports = {
         channel: '',
         librariesToLoad: ['places'],
         version: '3',
-        componentRestrictions: '',
+        componentRestrictions: {},
         fields: ['address_component', 'adr_address', 'formatted_address', 'geometry', 'icon', 'name', 'place_id', 'type', 'url', 'vicinity'],
         useSessionTokens: true
     },
     woosmap: {
         projectKey: '',
-        componentRestrictions: '',
+        componentRestrictions: {},
+        addressComponentRestrictions: {},
         types: [],
         data: 'standard',
         language: '',

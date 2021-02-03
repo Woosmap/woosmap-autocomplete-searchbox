@@ -173,7 +173,7 @@
                    placeholder="Search for Postcode Or Locality..."/>
             <div class="wrapper-search-settings">
                 <fieldset>
-                    <legend>Call Google Places Condition</legend>
+                    <legend>Fallback Condition</legend>
                     <div>
                         <label for="minRatio">Minimum Partial Matching Ratio (%):</label>
                         <input type="number" id="minRatio" name="minRatio"
@@ -189,6 +189,7 @@
                 <div>
                     <label for="language-select">Language:</label>
                     <select id="language-select" onchange="saveSettings()">
+                        <option value="">not specified</option>
                         <option value="fr">French</option>
                         <option value="en">English</option>
                         <option value="it">Italian</option>
@@ -249,16 +250,16 @@
         const componentsISO3 = componentSelect.options[componentSelect.selectedIndex].getAttribute('data-woosmapaddress');
         if (components !== "") {
             autocomplete.woosmap.componentRestrictions = {country: components.split(",")};
-            autocomplete.woosmapaddress.componentRestrictions = {country: componentsISO3.split(",")};
-            autocomplete.woosmap.language = language;
-            autocomplete.woosmapaddress.language = language;
-            autocomplete.woosmapaddress.componentRestrictions = {country: componentsISO3.split(",")};
+            autocomplete.woosmapaddress.addressComponentRestrictions = {country: componentsISO3.split(",")};
             autocomplete.google.componentRestrictions = {country: components.split(",")};
         } else {
             autocomplete.woosmap.componentRestrictions = {};
-            autocomplete.woosmapaddress.componentRestrictions = {};
+            autocomplete.woosmapaddress.addressComponentRestrictions = {};
             autocomplete.google.componentRestrictions = {};
         }
+        autocomplete.woosmap.language = language;
+        autocomplete.woosmapaddress.language = language;
+        autocomplete.google.language = language;
         autocomplete.autocomplete.minChars = 1;
         autocomplete.minRatio = document.getElementById('minRatio').value;
         autocomplete.breakpointRatio = document.getElementById("breakpointRatio").value;

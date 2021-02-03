@@ -27,7 +27,7 @@
         }
 
         buildParams() {
-            const components = this.buildComponents(this.componentRestrictions);
+            const components = this.buildComponents(this.addressComponentRestrictions);
             const urlParams = {
                 key: this.projectKey
             };
