@@ -184,3 +184,15 @@
     background-repeat: no-repeat;
     background-size: 120px 14px
 }
+.autocomplete.woosmapaddress > ul::after {
+    content: "";
+    margin: 0 3px 3px;
+    height: 16px;
+    box-sizing: border-box;
+    text-align: right;
+    display: block;
+    background-image: url(https://images.woosmap.com/woosmap-address.png);
+    background-position: right;
+    background-repeat: no-repeat;
+    background-size: contain
+}

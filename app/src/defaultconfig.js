@@ -5,17 +5,19 @@ module.exports = {
         channel: '',
         librariesToLoad: ['places'],
         version: '3',
-        componentRestrictions: '',
+        componentRestrictions: {},
         fields: ['address_component', 'adr_address', 'formatted_address', 'geometry', 'icon', 'name', 'place_id', 'type', 'url', 'vicinity'],
         useSessionTokens: true
     },
     woosmap: {
         projectKey: '',
-        componentRestrictions: '',
+        componentRestrictions: {},
+        addressComponentRestrictions: {},
         types: [],
         data: 'standard',
         language: '',
-        localitiesLibUrl: 'https://sdk.woosmap.com/localities/localities.js'
+        localitiesLibUrl: 'https://sdk.woosmap.com/localities/localities.js',
+        addressApiUrl: 'https://api.woosmap.com/address/'
     },
     autocomplete: {
         minChars: 2,
@@ -27,12 +29,14 @@ module.exports = {
     search: {
         minRatio: 75,
         breakpointRatio: 100,
-        fallbackWoosmap: true
+        fallbackWoosmapAddress: false,
+        fallbackWoosmap: true,
     },
     analytics: {
         tracking: false,
         analyticsKey: '',
         eventCategoryWoosmap: 'woosmap-localities',
+        eventCategoryWoosmapAddress: 'woosmap-address',
         eventCategoryGoogle: 'google-places'
     },
 };

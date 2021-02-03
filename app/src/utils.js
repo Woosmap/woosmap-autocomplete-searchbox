@@ -60,6 +60,18 @@ module.exports = {
             };
         }
     },
+    buildQueryString: function (parameters) {
+        let queryStringParts = [];
+        for (let key in parameters) {
+            if (parameters.hasOwnProperty(key)) {
+                let value = parameters[key];
+                if (value !== undefined) {
+                    queryStringParts.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
+                }
+            }
+        }
+        return queryStringParts.join('&');
+    },
     makeRequest: function ({method, url, headers, body}, resolve, reject) {
         const xhr = new window.XMLHttpRequest();
         xhr.open(method || "GET", url);

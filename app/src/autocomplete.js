@@ -327,7 +327,25 @@
     };
 
     Autocomplete.ITEM = function (text, input, item_id, secondary_text) {
-        var html = input.trim() === "" ? text : Autocomplete.HIGHLIGHT(text, fold(fuzz.full_process(text)), fold(fuzz.full_process(input.trim())));
+        var html = "";
+        var label = text.label;
+        if (Array.isArray(input)) {
+            var returnText = [];
+            for (var i = 0; i < input.length; i++) {
+                var startOfNext = 0;
+                if (input[i + 1]) {
+                    startOfNext = input[i + 1].offset;
+                }
+                if (i === 0) {
+                    returnText.push(Autocomplete.HIGHLIGHTPART(label, input[i], 0, startOfNext));
+                } else {
+                    returnText.push(Autocomplete.HIGHLIGHTPART(label, input[i], input[i].offset, startOfNext));
+                }
+            }
+            html = returnText.join("");
+        } else {
+            html = input === "" ? label : Autocomplete.HIGHLIGHT(label, fold(fuzz.full_process(label)), fold(fuzz.full_process(input.trim())));
+        }
         if (typeof secondary_text !== 'undefined' && typeof secondary_text === "string") {
             html = html.replaceLast(secondary_text, "<span class='secondary-text'>" + secondary_text + "</span>");
         }
@@ -338,6 +356,15 @@
             "ratio": text.metadata.ratio ? text.metadata.ratio : 0,
             "id": "autocomplete_list_" + this.count + "_item_" + item_id
         });
+    };
+
+    Autocomplete.HIGHLIGHTPART = function (text, matched_substring, start, end) {
+        var highlightTextStart = matched_substring.offset;
+        var highlightTextEnd = highlightTextStart + matched_substring.length;
+        var beforeText = text.slice(start, highlightTextStart);
+        var highlightedText = text.slice(highlightTextStart, highlightTextEnd);
+        var afterText = text.slice(highlightTextEnd, end || text.length);
+        return [beforeText + "<mark>" + highlightedText + "</mark>" + afterText];
     };
 
     Autocomplete.HIGHLIGHT = function (text, textFolded, inputFolded) {
