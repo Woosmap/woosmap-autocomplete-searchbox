@@ -6202,6 +6202,9 @@ module.exports = function(XRegExp) {
         var label = text.label;
         if (Array.isArray(input)) {
             var returnText = [];
+            if (input.length === 0) {
+                returnText.push(label);
+            }
             for (var i = 0; i < input.length; i++) {
                 var startOfNext = 0;
                 if (input[i + 1]) {
